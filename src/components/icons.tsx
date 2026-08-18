@@ -133,6 +133,29 @@ export function IconHumidity({ className = '' }: IconProps) {
   )
 }
 
+export function IconBox({ className = '' }: IconProps) {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className={className}>
+      <path
+        d="M10 2.6 3.4 5.8v8.4L10 17.4l6.6-3.2V5.8L10 2.6Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      <path d="M3.4 5.8 10 9l6.6-3.2M10 9v8.4" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+export function IconMail({ className = '' }: IconProps) {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className={className}>
+      <rect x="2.6" y="4.4" width="14.8" height="11.2" rx="2.4" stroke="currentColor" strokeWidth="1.5" />
+      <path d="m3.6 6.2 5.5 4a1.5 1.5 0 0 0 1.8 0l5.5-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  )
+}
+
 export function IconDash({ className = '' }: IconProps) {
   return (
     <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className={className}>

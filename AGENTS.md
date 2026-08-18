@@ -11,13 +11,18 @@
 
 ## Application Shape
 
-- `src/main.tsx` mounts the single page from `src/App.tsx`; there is no router or backend/API layer.
-- `src/App.tsx` composes the landing sections in order: `Navbar`, `Hero`, `ComoFunciona`, `QueMide`, `Precios`, `Dudas`, `CtaFinal`, `Footer`. A new section only renders once it is added there.
+- The site is a lead-validation funnel, not a shop: `Landing → /quiero-flory → /gracias`. Nothing is charged, and there is no cart or checkout.
+- `src/main.tsx` mounts `BrowserRouter` inside `I18nProvider` and calls `captureAttribution()` before the first render. `src/App.tsx` only declares routes; `ScrollRestoration.tsx` handles scroll on navigation, including `/#section` hashes.
+- Pages live in `src/pages/`. `Landing.tsx` composes the sections in order: `Navbar`, `Hero`, `ComoFunciona`, `QueMide`, `LaApp`, `Precios`, `Dudas`, `CtaFinal`, `Footer`. A new section only renders once it is added there.
+- SPA fallback is configured in `public/_redirects` (Netlify) and `vercel.json`. Without one of those, `/quiero-flory` returns 404 on deploy.
+- `src/lib/` holds the non-visual layer: `pricing.ts` (single source of prices and the `AB_TESTING_ENABLED` switch), `leads.ts` (**mock** submission, one TODO marks where the real POST goes), `attribution.ts` (first-touch UTMs in sessionStorage) and `analytics.ts` (single `track()` seam, currently console-only in dev).
+- Every "Lo quiero" CTA must use `components/CtaLoQuiero.tsx`. A raw link to `/quiero-flory` skips the funnel event and stops being measurable.
 - `src/components/icons.tsx` holds every inline SVG icon and the wordmark; there is no icon dependency. `Reveal.tsx` is the shared IntersectionObserver scroll-in wrapper.
-- `src/i18n.tsx` is the only copy source for English, Spanish, and Brazilian Portuguese. English is the fallback; the provider persists `flory-language` and synchronises `<html lang>`, title, and description. Keep stable IDs and visual data in components, not in translated arrays.
-- Sections alternate cream and white backgrounds, and each transition is an inline `<svg preserveAspectRatio="none">` wave pinned to the section edge. Changing a section's background means updating the neighbouring wave `fill`.
+- `src/i18n.tsx` is the only copy source for Spanish, English, and Brazilian Portuguese. Spanish is the fallback. The three languages must keep identical key structure and array lengths, or `copy` stops being iterable. Prices are **not** here: they come from `lib/pricing.ts` because they vary per A/B variant. Pages set their own `<title>` through `usePageMeta`, not the provider.
+- Sections alternate cream and white, with `LaApp` on forest. Each transition is an inline `<svg preserveAspectRatio="none">` wave pinned to the section edge. Changing a section's background means updating the neighbouring wave `fill`.
 - Spanish copy uses a Chilean voice, Portuguese is Brazilian, and prices remain CLP in every language.
-- Product imagery is already grouped under `src/assets/mascot/` and `src/assets/photos/`; check there before adding new assets. `photos/sensor-in-pot-closeup.png` is ~1.9 MB and ships unoptimised.
+- Product imagery is grouped under `src/assets/mascot/`, `photos/`, `mockups-free/` and `mockups-pro/`; check there before adding new assets. `photos/sensor-in-pot-closeup.png` (~1.9 MB) and the mockups ship unoptimised, so mockups are lazy-loaded and only the active tab of `LaApp` renders.
+- Known copy/asset mismatches: the mockups still label the third ring "Nutrientes" (the site says ambient humidity) and badge the paid tier "Flory Pro" (the site says "Flory Premium"). Regenerating those images is pending.
 
 ## Toolchain Details
 

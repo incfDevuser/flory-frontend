@@ -2,7 +2,7 @@ import { useState } from 'react'
 import floryIdea from '../assets/mascot/flory-idea.png'
 import sensorCloseup from '../assets/photos/sensor-in-pot-closeup.png'
 import { useI18n } from '../i18n'
-import { IconDrop, IconNutrients, IconSun, IconThermometer } from './icons'
+import { IconDrop, IconHumidity, IconSun, IconThermometer } from './icons'
 import Reveal from './Reveal'
 
 const blob = 'rounded-[46%_54%_42%_58%/48%_42%_58%_52%]'
@@ -23,8 +23,8 @@ const metricVisuals = [
     tint: 'bg-amber-100 text-amber',
   },
   {
-    id: 'nutrients',
-    Icon: IconNutrients,
+    id: 'humidity',
+    Icon: IconHumidity,
     percent: 54,
     color: 'var(--color-leaf)',
     tint: 'bg-leaf-100 text-leaf',
@@ -145,7 +145,7 @@ export default function QueMide() {
         aria-hidden="true"
         className="absolute inset-x-0 bottom-0 h-16 w-full sm:h-24"
       >
-        <path fill="#ffffff" d="M0,74 C220,96 480,44 760,26 C1010,10 1250,30 1440,58 L1440,120 L0,120 Z" />
+        <path fill="var(--color-forest)" d="M0,74 C220,96 480,44 760,26 C1010,10 1250,30 1440,58 L1440,120 L0,120 Z" />
       </svg>
     </section>
   )

@@ -1,7 +1,8 @@
 import leafPurple from '../assets/mascot/leaf-purple.png'
 import device from '../assets/photos/flory-device.png'
 import { useI18n } from '../i18n'
-import { IconArrowRight, IconPlay, IconSun } from './icons'
+import CtaLoQuiero from './CtaLoQuiero'
+import { IconPlay, IconSun } from './icons'
 
 function Ring({ value }: { value: number }) {
   const radius = 15.5
@@ -88,13 +89,7 @@ export default function Hero() {
           className="mt-8 flex animate-rise flex-col items-center justify-center gap-3 sm:flex-row"
           style={{ animationDelay: '240ms' }}
         >
-          <a
-            href="#precios"
-            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-leaf px-7 py-3.5 font-display font-semibold text-white shadow-[0_18px_34px_-16px_rgba(63,157,99,0.95)] transition hover:-translate-y-0.5 hover:bg-leaf-600 active:translate-y-0 sm:w-auto"
-          >
-            {copy.hero.primaryCta}
-            <IconArrowRight className="size-5" />
-          </a>
+          <CtaLoQuiero label={copy.hero.primaryCta} location="hero" className="w-full sm:w-auto" />
           <a
             href="#como-funciona"
             className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 font-display font-semibold text-forest shadow-[0_14px_30px_-20px_rgba(31,74,44,0.7)] transition hover:-translate-y-0.5 hover:bg-white/80 active:translate-y-0 sm:w-auto"

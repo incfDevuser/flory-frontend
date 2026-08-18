@@ -1,25 +1,19 @@
-import ComoFunciona from './components/ComoFunciona'
-import CtaFinal from './components/CtaFinal'
-import Dudas from './components/Dudas'
-import Footer from './components/Footer'
-import Hero from './components/Hero'
-import Navbar from './components/Navbar'
-import Precios from './components/Precios'
-import QueMide from './components/QueMide'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import ScrollRestoration from './components/ScrollRestoration'
+import Gracias from './pages/Gracias'
+import Landing from './pages/Landing'
+import QuieroFlory from './pages/QuieroFlory'
 
 function App() {
   return (
     <>
-      <Navbar />
-      <main>
-        <Hero />
-        <ComoFunciona />
-        <QueMide />
-        <Precios />
-        <Dudas />
-        <CtaFinal />
-      </main>
-      <Footer />
+      <ScrollRestoration />
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/quiero-flory" element={<QuieroFlory />} />
+        <Route path="/gracias" element={<Gracias />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     </>
   )
 }

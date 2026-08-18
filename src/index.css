@@ -105,6 +105,18 @@
   }
 }
 
+@layer utilities {
+  /* Carruseles de mockups: la barra de scroll parte el diseño en desktop y
+     en móvil el gesto ya es evidente por el corte de la última tarjeta. */
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

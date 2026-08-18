@@ -1,45 +1,13 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useI18n } from '../i18n'
-import type { Language } from '../i18n'
-import { IconArrowRight, LogoFlory } from './icons'
+import CtaLoQuiero from './CtaLoQuiero'
+import { LogoFlory } from './icons'
+import LanguagePicker from './LanguagePicker'
 
-const linkHrefs = ['#que-mide', '#como-funciona', '#precios', '#dudas']
-const languages: { code: Language; flag: string; label: string }[] = [
-  { code: 'en', flag: '🇺🇸', label: 'English' },
-  { code: 'es', flag: '🇨🇱', label: 'Español' },
-  { code: 'pt', flag: '🇧🇷', label: 'Português' },
-]
-
-function LanguagePicker() {
-  const { language, setLanguage, copy } = useI18n()
-
-  return (
-    <div
-      role="group"
-      aria-label={copy.language.label}
-      className="flex items-center rounded-full bg-white/75 p-1 shadow-sm ring-1 ring-forest/5"
-    >
-      {languages.map((item) => (
-        <button
-          key={item.code}
-          type="button"
-          onClick={() => setLanguage(item.code)}
-          aria-label={item.label}
-          aria-pressed={language === item.code}
-          title={item.label}
-          lang={item.code === 'pt' ? 'pt-BR' : item.code}
-          className={`grid size-7 place-items-center rounded-full text-base leading-none transition sm:size-8 ${
-            language === item.code
-              ? 'bg-forest shadow-sm ring-2 ring-white'
-              : 'opacity-55 grayscale-[35%] hover:opacity-100 hover:grayscale-0'
-          }`}
-        >
-          <span aria-hidden="true">{item.flag}</span>
-        </button>
-      ))}
-    </div>
-  )
-}
+// Van con `/` delante para que también funcionen desde /quiero-flory:
+// ScrollRestoration se encarga de saltar a la sección al llegar.
+const linkHrefs = ['/#como-funciona', '/#que-mide', '/#la-app', '/#precios', '/#dudas']
 
 export default function Navbar() {
   const { copy } = useI18n()
@@ -61,31 +29,30 @@ export default function Navbar() {
           scrolled ? 'bg-cream/85 shadow-[0_10px_30px_-18px_rgba(31,74,44,0.5)] backdrop-blur-md' : 'bg-transparent'
         }`}
       >
-        <a href="#inicio" className="flex items-center gap-1" aria-label={copy.nav.homeLabel}>
+        <Link to="/" className="flex items-center gap-1" aria-label={copy.nav.homeLabel}>
           <LogoFlory />
-        </a>
+        </Link>
 
         <ul className="hidden items-center gap-1 lg:flex">
           {links.map((link) => (
             <li key={link.href}>
-              <a
-                href={link.href}
+              <Link
+                to={link.href}
                 className="rounded-full px-3.5 py-2 text-sm font-semibold text-forest/80 transition hover:bg-white/70 hover:text-forest"
               >
                 {link.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
 
         <div className="flex items-center gap-2">
-          <a
-            href="#precios"
-            className="hidden items-center gap-2 rounded-full bg-leaf px-5 py-2.5 text-sm font-bold text-white shadow-[0_10px_24px_-12px_rgba(63,157,99,0.9)] transition hover:-translate-y-0.5 hover:bg-leaf-600 active:translate-y-0 sm:inline-flex"
-          >
-            {copy.nav.cta}
-            <IconArrowRight className="size-4" />
-          </a>
+          <CtaLoQuiero
+            label={copy.nav.cta}
+            location="navbar"
+            size="sm"
+            className="hidden sm:inline-flex"
+          />
 
           <LanguagePicker />
 
@@ -117,24 +84,23 @@ export default function Navbar() {
         <ul className="flex flex-col">
           {links.map((link) => (
             <li key={link.href}>
-              <a
-                href={link.href}
+              <Link
+                to={link.href}
                 onClick={() => setOpen(false)}
                 className="block rounded-2xl px-4 py-3 text-sm font-semibold text-forest transition hover:bg-white/80"
               >
                 {link.label}
-              </a>
+              </Link>
             </li>
           ))}
           <li className="p-1">
-            <a
-              href="#precios"
-              onClick={() => setOpen(false)}
-              className="flex items-center justify-center gap-2 rounded-full bg-leaf px-5 py-3 text-sm font-bold text-white"
-            >
-              {copy.nav.cta}
-              <IconArrowRight className="size-4" />
-            </a>
+            <CtaLoQuiero
+              label={copy.nav.cta}
+              location="navbar_mobile"
+              size="sm"
+              className="w-full py-3"
+              onNavigate={() => setOpen(false)}
+            />
           </li>
         </ul>
       </div>

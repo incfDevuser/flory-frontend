@@ -1,26 +1,24 @@
+import { useMemo } from 'react'
 import { useI18n } from '../i18n'
-import { IconCheck, IconDash } from './icons'
+import { formatCLP, getPlans, getPriceVariant } from '../lib/pricing'
+import CtaLoQuiero from './CtaLoQuiero'
+import { IconCheck } from './icons'
 import Reveal from './Reveal'
 
-const sensorVisuals = [
-  {
-    arc: 'bg-lime',
-    featured: false,
-  },
-  {
-    arc: 'bg-amber',
-    featured: true,
-  },
-]
-
+/**
+ * Resumen de precios de la landing.
+ *
+ * A propósito no tiene un botón por tarjeta: la elección de plan se mide en
+ * /quiero-flory, así que aquí solo se muestra el precio y se manda a la
+ * página de planes con un único CTA.
+ */
 export default function Precios() {
   const { copy } = useI18n()
-  const sensors = copy.pricing.sensors.map((sensor, index) => ({ ...sensor, ...sensorVisuals[index] }))
-  const appPlans = copy.pricing.appPlans.map((plan, index) => ({ ...plan, featured: index === 1 }))
+  const plans = useMemo(() => getPlans(getPriceVariant()), [])
 
   return (
     <section id="precios" className="relative bg-white pt-16 pb-32 sm:pt-20 sm:pb-40">
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-5xl px-6">
         <Reveal className="text-center">
           <p className="font-display text-xs font-semibold tracking-[0.18em] text-leaf uppercase">
             {copy.pricing.eyebrow}
@@ -33,163 +31,61 @@ export default function Precios() {
           </p>
         </Reveal>
 
-        <div className="mx-auto mt-20 grid max-w-3xl items-center gap-8 sm:grid-cols-2 sm:gap-6">
-          {sensors.map((sensor, index) => (
-            <Reveal key={sensor.name} delay={index * 110} className="relative">
-              <span
-                aria-hidden="true"
-                className={`absolute -top-7 left-1/2 h-14 w-28 -translate-x-1/2 rounded-t-full ${sensor.arc}`}
-              />
+        <div className="mt-12 grid items-start gap-6 lg:grid-cols-3">
+          {plans.map((plan, index) => {
+            const planCopy = copy.pricing.plans[index]
 
-              <article
-                className={`relative flex h-full flex-col rounded-[28px] p-7 transition duration-300 ${
-                  sensor.featured
-                    ? 'bg-leaf-100 shadow-[0_34px_60px_-34px_rgba(31,74,44,0.6)] ring-2 ring-leaf-300'
-                    : 'bg-white shadow-[0_26px_50px_-34px_rgba(31,74,44,0.55)] ring-1 ring-black/5 hover:-translate-y-1'
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <h3 className="font-display text-lg font-bold">{sensor.name}</h3>
-                  {sensor.featured && (
-                    <span className="rounded-full bg-lime-100 px-2.5 py-1 text-[11px] font-bold text-leaf-600">
-                      {copy.pricing.mostPopular}
-                    </span>
-                  )}
-                </div>
-
-                <p className="mt-4 flex items-baseline gap-2">
-                  <span className="font-display text-[2.1rem] leading-none font-bold text-forest">{sensor.price}</span>
-                  <span className="text-xs font-semibold text-muted">{sensor.period}</span>
-                </p>
-
-                <p className="mt-4 text-sm leading-relaxed text-pretty text-muted">{sensor.description}</p>
-
-                <ul className="mt-6 flex flex-col gap-3">
-                  {sensor.features.map((feature) => (
-                    <li key={feature} className="flex items-center gap-3 text-sm font-semibold text-ink">
-                      {sensor.featured ? (
-                        <IconCheck className="size-4 shrink-0 text-leaf" />
-                      ) : (
-                        <span className="grid size-5 shrink-0 place-items-center rounded-full bg-leaf-100 text-leaf">
-                          <IconCheck className="size-3" />
-                        </span>
-                      )}
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-
-                <a
-                  href="#inicio"
-                  className={`mt-8 inline-flex items-center justify-center rounded-full px-6 py-3.5 font-display font-semibold transition ${
-                    sensor.featured
-                      ? 'bg-leaf text-white shadow-[0_18px_32px_-18px_rgba(63,157,99,0.95)] hover:-translate-y-0.5 hover:bg-leaf-600'
-                      : 'text-forest ring-1 ring-black/10 hover:-translate-y-0.5 hover:bg-cream'
+            return (
+              <Reveal key={plan.id} delay={index * 90}>
+                <article
+                  className={`flex h-full flex-col rounded-[28px] p-7 ${
+                    plan.featured
+                      ? 'bg-leaf-100 shadow-[0_34px_60px_-34px_rgba(31,74,44,0.6)] ring-2 ring-leaf-300'
+                      : 'bg-cream ring-1 ring-forest/10'
                   }`}
                 >
-                  {sensor.cta}
-                </a>
-              </article>
-            </Reveal>
-          ))}
-        </div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h3 className="font-display text-lg font-bold text-forest">{planCopy.name}</h3>
+                    {plan.featured && (
+                      <span className="rounded-full bg-lime-100 px-2.5 py-1 text-[11px] font-bold text-leaf-600">
+                        {copy.pricing.mostPopular}
+                      </span>
+                    )}
+                  </div>
 
-        <Reveal className="mt-24 text-center">
-          <p className="font-display text-xs font-semibold tracking-[0.18em] text-leaf uppercase">
-            {copy.pricing.appEyebrow}
-          </p>
-          <h3 className="mx-auto mt-3 max-w-xl font-display text-2xl leading-[1.2] font-bold text-balance sm:text-[2rem]">
-            {copy.pricing.appTitle}
-          </h3>
-        </Reveal>
-
-        <div className="mt-10 grid items-start gap-6 md:grid-cols-2">
-          {appPlans.map((plan, index) => (
-            <Reveal key={plan.name} delay={index * 110}>
-              <article
-                className={`flex h-full flex-col rounded-[28px] p-7 sm:p-8 ${
-                  plan.featured
-                    ? 'bg-forest shadow-[0_38px_70px_-38px_rgba(31,74,44,0.9)]'
-                    : 'bg-cream ring-1 ring-forest/10'
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <h3 className={`font-display text-lg font-bold ${plan.featured ? 'text-white' : 'text-forest'}`}>
-                    {plan.name}
-                  </h3>
-                  {plan.featured && (
-                    <span className="rounded-full bg-lime px-2.5 py-1 text-[11px] font-bold text-forest">
-                      {copy.pricing.intelligence}
+                  <p className="mt-4 flex items-baseline gap-2">
+                    <span className="font-display text-[2.1rem] leading-none font-bold text-forest">
+                      {formatCLP(plan.price)}
                     </span>
-                  )}
-                </div>
+                    <span className="text-xs font-semibold text-muted">{copy.pricing.oneTime}</span>
+                  </p>
 
-                <p className="mt-4 flex items-baseline gap-2">
-                  <span
-                    className={`font-display text-[2.1rem] leading-none font-bold ${
-                      plan.featured ? 'text-white' : 'text-forest'
-                    }`}
-                  >
-                    {plan.price}
-                  </span>
-                  <span className={`text-xs font-semibold ${plan.featured ? 'text-white/60' : 'text-muted'}`}>
-                    {plan.period}
-                  </span>
-                </p>
+                  {/* Altura mínima de dos líneas: sin esto, las descripciones
+                      de una y dos líneas descuadran las listas entre tarjetas. */}
+                  <p className="mt-3 min-h-11 text-sm leading-relaxed text-pretty text-muted">{planCopy.tagline}</p>
 
-                <p
-                  className={`mt-4 text-sm leading-relaxed text-pretty ${plan.featured ? 'text-white/70' : 'text-muted'}`}
-                >
-                  {plan.description}
-                </p>
-
-                <ul className="mt-6 flex flex-col gap-3">
-                  {plan.features.map((feature) => (
-                    <li
-                      key={feature.label}
-                      className={`flex items-start gap-3 text-sm font-semibold ${
-                        !feature.included ? (plan.featured ? 'text-white/40' : 'text-muted/70') : plan.featured ? 'text-white' : 'text-ink'
-                      }`}
-                    >
-                      {feature.included ? (
-                        <span
-                          className={`mt-0.5 grid size-5 shrink-0 place-items-center rounded-full ${
-                            plan.featured ? 'bg-white/10 text-lime' : 'bg-leaf-100 text-leaf'
-                          }`}
-                        >
+                  <ul className="mt-5 flex flex-col gap-2.5">
+                    {planCopy.features.map((feature) => (
+                      <li key={feature} className="flex items-start gap-2.5 text-sm font-semibold text-ink">
+                        <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-white text-leaf">
                           <IconCheck className="size-3" />
                         </span>
-                      ) : (
-                        <span
-                          className={`mt-0.5 grid size-5 shrink-0 place-items-center rounded-full ${
-                            plan.featured ? 'bg-white/5 text-white/40' : 'bg-cream-300/60 text-muted'
-                          }`}
-                        >
-                          <IconDash className="size-3" />
-                        </span>
-                      )}
-                      {feature.label}
-                    </li>
-                  ))}
-                </ul>
-
-                {plan.featured ? (
-                  <a
-                    href="#inicio"
-                    className="mt-8 inline-flex items-center justify-center rounded-full bg-lime px-6 py-3.5 font-display font-semibold text-forest shadow-[0_18px_32px_-18px_rgba(176,221,79,0.9)] transition hover:-translate-y-0.5 hover:bg-lime-300"
-                  >
-                    {copy.pricing.plusCta}
-                  </a>
-                ) : (
-                  <p className="mt-8 rounded-full bg-white px-6 py-3.5 text-center font-display font-semibold text-muted">
-                    {copy.pricing.basicIncluded}
-                  </p>
-                )}
-              </article>
-            </Reveal>
-          ))}
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              </Reveal>
+            )
+          })}
         </div>
+
+        <Reveal delay={280} className="mt-12 text-center">
+          <CtaLoQuiero label={copy.pricing.cta} location="precios" />
+          <p className="mt-4 text-xs text-muted">{copy.pricing.note}</p>
+        </Reveal>
       </div>
+
       <svg
         viewBox="0 0 1440 120"
         preserveAspectRatio="none"

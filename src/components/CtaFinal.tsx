@@ -1,6 +1,6 @@
 import floryWave from '../assets/mascot/flory-wave.png'
 import { useI18n } from '../i18n'
-import { IconArrowRight } from './icons'
+import CtaLoQuiero from './CtaLoQuiero'
 import Reveal from './Reveal'
 
 export default function CtaFinal() {
@@ -41,13 +41,12 @@ export default function CtaFinal() {
 
         <Reveal delay={150}>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-8">
-            <a
-              href="#precios"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-lime px-7 py-3.5 font-display font-semibold text-forest shadow-[0_18px_34px_-16px_rgba(176,221,79,0.8)] transition hover:-translate-y-0.5 hover:bg-lime-300 active:translate-y-0 sm:w-auto"
-            >
-              {copy.cta.primary}
-              <IconArrowRight className="size-5" />
-            </a>
+            <CtaLoQuiero
+              label={copy.cta.primary}
+              location="cta_final"
+              variant="lime"
+              className="w-full sm:w-auto"
+            />
 
             <a
               href="#dudas"

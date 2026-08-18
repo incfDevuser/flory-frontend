@@ -1,6 +1,16 @@
+import { Link } from 'react-router-dom'
 import floryHeart from '../assets/mascot/flory-heart.png'
 import { useI18n } from '../i18n'
 import { LogoFlory } from './icons'
+
+// Destinos por columna, en el mismo orden que `copy.footer.columns`.
+// Las secciones que aún no existen apuntan al inicio en vez de simular
+// páginas que no están construidas.
+const columnHrefs = [
+  ['/#como-funciona', '/#que-mide', '/#la-app', '/#precios'],
+  ['/#dudas', '/', '/', '/'],
+  ['/', '/', '/', '/'],
+]
 
 export default function Footer() {
   const { copy } = useI18n()
@@ -16,15 +26,18 @@ export default function Footer() {
             </p>
           </div>
 
-          {copy.footer.columns.map((column) => (
+          {copy.footer.columns.map((column, columnIndex) => (
             <div key={column.title}>
               <h3 className="font-display text-sm font-bold text-forest">{column.title}</h3>
               <ul className="mt-4 flex flex-col gap-3">
-                {column.links.map((link) => (
+                {column.links.map((link, linkIndex) => (
                   <li key={link}>
-                    <a href="#inicio" className="text-sm text-muted transition hover:text-forest">
+                    <Link
+                      to={columnHrefs[columnIndex][linkIndex]}
+                      className="text-sm text-muted transition hover:text-forest"
+                    >
                       {link}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -39,14 +52,14 @@ export default function Footer() {
           </p>
           <ul className="flex items-center gap-6">
             <li>
-              <a href="#inicio" className="text-xs text-muted transition hover:text-forest">
+              <Link to="/" className="text-xs text-muted transition hover:text-forest">
                 {copy.footer.terms}
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#inicio" className="text-xs text-muted transition hover:text-forest">
+              <Link to="/" className="text-xs text-muted transition hover:text-forest">
                 {copy.footer.privacy}
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
