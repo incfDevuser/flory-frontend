@@ -1,25 +1,21 @@
 /**
  * Captura de leads.
  *
- * ⚠️ IMPLEMENTACIÓN MOCK. No hay backend todavía: `submitLead` simula la
- * latencia de red, escribe el lead en localStorage y siempre responde ok.
- *
- * Para conectar el backend real hay que tocar UN solo sitio: el cuerpo de
- * `submitLead` (ver el TODO más abajo). El tipo `Lead` ya tiene exactamente
- * la forma que espera la especificación, así que el payload no cambia.
- *
- * Los leads acumulados se pueden inspeccionar en la consola del navegador con:
- *   JSON.parse(localStorage.getItem('flory-leads'))
+ * La publishable key solo puede insertar gracias a RLS. La tabla no expone
+ * SELECT, UPDATE ni DELETE al navegador.
  */
 
 import { getAttribution } from './attribution'
 import type { PlanId, PriceVariant } from './pricing'
+import { insertSupabaseLead } from './supabase'
 
 export type LeadInput = {
   email: string
   name?: string
   selectedPlan: PlanId
+  regularPrice: number
   displayedPrice: number
+  launchUnitPrice: number
   priceVariant: PriceVariant
 }
 
@@ -38,7 +34,24 @@ export type Lead = LeadInput & {
 
 export type LeadResult = { ok: true; lead: Lead } | { ok: false; error: 'invalid_email' | 'network' }
 
-const leadsStorageKey = 'flory-leads'
+type LeadRow = {
+  email: string
+  name: string | null
+  selected_plan: PlanId
+  regular_price: number
+  displayed_price: number
+  launch_unit_price: number
+  price_variant: PriceVariant
+  utm_source: string | null
+  utm_medium: string | null
+  utm_campaign: string | null
+  utm_content: string | null
+  utm_term: string | null
+  referrer: string | null
+  landing_path: string | null
+  device: string
+  language: string
+}
 
 /**
  * Validación deliberadamente permisiva: solo descarta lo que es
@@ -52,23 +65,9 @@ export function isValidEmail(value: string): boolean {
   return /^[^@]+@[^@.]+(\.[^@.]+)+$/.test(trimmed)
 }
 
-function persistLocally(lead: Lead): void {
-  try {
-    const raw = localStorage.getItem(leadsStorageKey)
-    const previous = raw ? (JSON.parse(raw) as Lead[]) : []
-    localStorage.setItem(leadsStorageKey, JSON.stringify([...previous, lead]))
-  } catch {
-    // localStorage lleno o bloqueado: no es motivo para fallar el envío.
-  }
-}
-
-export function getStoredLeads(): Lead[] {
-  try {
-    const raw = localStorage.getItem(leadsStorageKey)
-    return raw ? (JSON.parse(raw) as Lead[]) : []
-  } catch {
-    return []
-  }
+function optionalText(value: string | undefined, maxLength: number): string | undefined {
+  const normalized = value?.trim()
+  return normalized ? normalized.slice(0, maxLength) : undefined
 }
 
 export async function submitLead(input: LeadInput, language: string): Promise<LeadResult> {
@@ -80,38 +79,91 @@ export async function submitLead(input: LeadInput, language: string): Promise<Le
 
   const lead: Lead = {
     email: input.email.trim().toLowerCase(),
-    name: input.name?.trim() || undefined,
+    name: optionalText(input.name, 100),
     selectedPlan: input.selectedPlan,
+    regularPrice: input.regularPrice,
     displayedPrice: input.displayedPrice,
+    launchUnitPrice: input.launchUnitPrice,
     priceVariant: input.priceVariant,
-    utmSource: attribution.utmSource,
-    utmMedium: attribution.utmMedium,
-    utmCampaign: attribution.utmCampaign,
-    utmContent: attribution.utmContent,
-    utmTerm: attribution.utmTerm,
-    referrer: attribution.referrer,
-    landingPath: attribution.landingPath,
+    utmSource: optionalText(attribution.utmSource, 255),
+    utmMedium: optionalText(attribution.utmMedium, 255),
+    utmCampaign: optionalText(attribution.utmCampaign, 255),
+    utmContent: optionalText(attribution.utmContent, 255),
+    utmTerm: optionalText(attribution.utmTerm, 255),
+    referrer: optionalText(attribution.referrer, 2048),
+    landingPath: optionalText(attribution.landingPath, 2048),
     device: attribution.device,
     language,
     createdAt: new Date().toISOString(),
   }
 
-  // ─────────────────────────────────────────────────────────────────────
-  // TODO(backend): reemplazar todo este bloque por la llamada real.
-  //
-  //   const response = await fetch(import.meta.env.VITE_LEADS_ENDPOINT, {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify(lead),
-  //   })
-  //   if (!response.ok) return { ok: false, error: 'network' }
-  //   return { ok: true, lead }
-  // ─────────────────────────────────────────────────────────────────────
-  await new Promise((resolve) => setTimeout(resolve, 650))
-  persistLocally(lead)
+  const row: LeadRow = {
+    email: lead.email,
+    name: lead.name ?? null,
+    selected_plan: lead.selectedPlan,
+    regular_price: lead.regularPrice,
+    displayed_price: lead.displayedPrice,
+    launch_unit_price: lead.launchUnitPrice,
+    price_variant: lead.priceVariant,
+    utm_source: lead.utmSource ?? null,
+    utm_medium: lead.utmMedium ?? null,
+    utm_campaign: lead.utmCampaign ?? null,
+    utm_content: lead.utmContent ?? null,
+    utm_term: lead.utmTerm ?? null,
+    referrer: lead.referrer ?? null,
+    landing_path: lead.landingPath ?? null,
+    device: lead.device,
+    language: lead.language,
+  }
+
+  let response: Response | null
+  try {
+    response = await insertSupabaseLead(row)
+  } catch (error) {
+    if (import.meta.env.DEV) {
+      console.error('[flory:supabase] No se pudo conectar con Supabase.', error)
+    }
+    return { ok: false, error: 'network' }
+  }
+
+  if (!response?.ok) {
+    const responseText = response ? await response.text() : 'missing_environment'
+    let responseBody: unknown = responseText
+
+    try {
+      responseBody = JSON.parse(responseText)
+    } catch {
+      // Conservamos el texto original para el log de desarrollo.
+    }
+
+    const errorCode =
+      typeof responseBody === 'object' && responseBody !== null && 'code' in responseBody
+        ? String(responseBody.code)
+        : null
+
+    // La restricción UNIQUE(email, selected_plan) evita filas repetidas. Para
+    // el usuario, reenviar el mismo interés sigue siendo un resultado exitoso.
+    if (response?.status === 409 && errorCode === '23505') {
+      if (import.meta.env.DEV) {
+        console.info('[flory:lead] lead duplicado; se conserva la fila existente')
+      }
+      return { ok: true, lead }
+    }
+
+    if (import.meta.env.DEV) {
+      console.error('[flory:supabase] Supabase rechazó el lead.', {
+        status: response?.status,
+        body: responseBody,
+      })
+    }
+    return { ok: false, error: 'network' }
+  }
 
   if (import.meta.env.DEV) {
-    console.info('[flory:lead] mock guardado en localStorage', lead)
+    console.info('[flory:lead] guardado en Supabase', {
+      selectedPlan: lead.selectedPlan,
+      displayedPrice: lead.displayedPrice,
+    })
   }
 
   return { ok: true, lead }

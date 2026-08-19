@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useI18n } from '../i18n'
-import { formatCLP, getPlans, getPriceVariant } from '../lib/pricing'
+import { LAUNCH_DEVICE_PRICE, formatCLP, getPlans, getPriceVariant } from '../lib/pricing'
 import CtaLoQuiero from './CtaLoQuiero'
 import { IconCheck } from './icons'
 import Reveal from './Reveal'
@@ -53,16 +53,32 @@ export default function Precios() {
                     )}
                   </div>
 
-                  <p className="mt-4 flex items-baseline gap-2">
-                    <span className="font-display text-[2.1rem] leading-none font-bold text-forest">
-                      {formatCLP(plan.price)}
-                    </span>
-                    <span className="text-xs font-semibold text-muted">{copy.pricing.oneTime}</span>
-                  </p>
+                  <div className="mt-4">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="rounded-full bg-lime-100 px-2.5 py-1 text-[10px] font-bold text-leaf-600">
+                        {copy.pricing.launchOffer}
+                      </span>
+                      <del className="text-xs font-semibold text-muted" aria-label={copy.pricing.regularPriceLabel}>
+                        {formatCLP(plan.price)}
+                      </del>
+                    </div>
+                    <p className="mt-2 flex items-baseline gap-2">
+                      <span className="font-display text-[2.1rem] leading-none font-bold text-forest">
+                        {formatCLP(plan.offerPrice)}
+                      </span>
+                      <span className="text-xs font-semibold text-muted">{copy.pricing.oneTime}</span>
+                    </p>
+                    {plan.deviceCount > 1 && (
+                      <p className="mt-1 text-xs font-bold text-leaf-600">
+                        {plan.deviceCount} × {formatCLP(LAUNCH_DEVICE_PRICE)} {copy.pricing.eachDevice}
+                      </p>
+                    )}
+                  </div>
 
                   {/* Altura mínima de dos líneas: sin esto, las descripciones
                       de una y dos líneas descuadran las listas entre tarjetas. */}
                   <p className="mt-3 min-h-11 text-sm leading-relaxed text-pretty text-muted">{planCopy.tagline}</p>
+                  <p className="mt-1 text-xs font-bold text-leaf-600">{planCopy.offerDetail}</p>
 
                   <ul className="mt-5 flex flex-col gap-2.5">
                     {planCopy.features.map((feature) => (

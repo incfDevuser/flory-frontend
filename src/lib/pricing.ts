@@ -9,8 +9,9 @@
 /**
  * Interruptor del A/B testing de precios.
  *
- * `false` → todo el mundo ve la variante B ($39.990).
- * `true`  → reparto aleatorio 33/33/33, estable durante toda la sesión.
+ * `false` → todo el mundo ve la variante B ($39.990) como precio normal.
+ * `true`  → el precio normal se reparte 33/33/33 y queda estable por sesión.
+ * La oferta de lanzamiento permanece fija en $19.990 por dispositivo.
  */
 export const AB_TESTING_ENABLED = false
 
@@ -33,6 +34,9 @@ export const PREMIUM_BUNDLE_MONTHS = 12
 /** Precio mensual de Flory Premium una vez terminado el período incluido. */
 export const PREMIUM_MONTHLY_PRICE = 3990
 
+/** Precio de lanzamiento por cada dispositivo para quienes dejan su correo. */
+export const LAUNCH_DEVICE_PRICE = 19990
+
 /** Pack de 3 sensores. Precio fijo, fuera del experimento. */
 export const CASA_PRICE = 94990
 
@@ -40,7 +44,11 @@ export type PlanId = 'FLORY' | 'FLORY_PREMIUM' | 'FLORY_CASA'
 
 export type Plan = {
   id: PlanId
+  /** Precio normal mostrado como referencia. */
   price: number
+  /** Total promocional que se guarda en `displayedPrice` al enviar el lead. */
+  offerPrice: number
+  deviceCount: number
   featured: boolean
 }
 
@@ -78,9 +86,21 @@ export function getPlans(variant: PriceVariant): Plan[] {
   const base = PRICE_VARIANTS[variant]
 
   return [
-    { id: 'FLORY', price: base, featured: false },
-    { id: 'FLORY_PREMIUM', price: base + PREMIUM_BUNDLE_DELTA, featured: true },
-    { id: 'FLORY_CASA', price: CASA_PRICE, featured: false },
+    { id: 'FLORY', price: base, offerPrice: LAUNCH_DEVICE_PRICE, deviceCount: 1, featured: false },
+    {
+      id: 'FLORY_PREMIUM',
+      price: base + PREMIUM_BUNDLE_DELTA,
+      offerPrice: LAUNCH_DEVICE_PRICE + PREMIUM_BUNDLE_DELTA,
+      deviceCount: 1,
+      featured: true,
+    },
+    {
+      id: 'FLORY_CASA',
+      price: CASA_PRICE,
+      offerPrice: LAUNCH_DEVICE_PRICE * 3,
+      deviceCount: 3,
+      featured: false,
+    },
   ]
 }
 

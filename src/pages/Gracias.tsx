@@ -1,16 +1,19 @@
 import { useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import floryWave from '../assets/mascot/flory-wave.png'
+import floryHeart from '../assets/mascot/flory-heart.png'
 import { IconMail } from '../components/icons'
 import PageHeader from '../components/PageHeader'
 import { useI18n, usePageMeta } from '../i18n'
 import { track } from '../lib/analytics'
+import { formatCLP } from '../lib/pricing'
 
 export default function Gracias() {
   const { copy } = useI18n()
   const location = useLocation()
-  const state = location.state as { email?: unknown } | null
+  const state = location.state as { email?: unknown; planName?: unknown; offerPrice?: unknown } | null
   const email = typeof state?.email === 'string' ? state.email : null
+  const planName = typeof state?.planName === 'string' ? state.planName : null
+  const offerPrice = typeof state?.offerPrice === 'number' ? state.offerPrice : null
   usePageMeta(copy.gracias.meta.title, copy.gracias.meta.description)
 
   useEffect(() => {
@@ -21,15 +24,15 @@ export default function Gracias() {
     <div className="flex min-h-dvh flex-col bg-cream">
       <PageHeader />
 
-      <main className="relative flex flex-1 items-center overflow-hidden px-6 py-16">
+      <main className="relative flex flex-1 items-start overflow-x-clip px-6 py-10 sm:items-center sm:py-16">
         <span aria-hidden="true" className="absolute top-[12%] -left-16 size-48 rounded-full bg-lime-300/40" />
         <span aria-hidden="true" className="absolute bottom-[8%] -right-16 size-56 rounded-full bg-grape-100/60" />
 
         <div className="relative mx-auto max-w-lg text-center">
           <img
-            src={floryWave}
+            src={floryHeart}
             alt={copy.gracias.alt}
-            className="mx-auto h-32 animate-float object-contain sm:h-36"
+            className="mx-auto h-24 animate-float object-contain sm:h-28"
           />
 
           <h1 className="mt-6 animate-rise font-display text-3xl leading-[1.15] font-bold text-balance sm:text-[2.6rem]">
@@ -51,10 +54,20 @@ export default function Gracias() {
               <span className="grid size-10 shrink-0 place-items-center rounded-full bg-white text-leaf">
                 <IconMail className="size-5" />
               </span>
-              <p className="text-sm text-muted">
-                {copy.gracias.emailPrefix}{' '}
-                <strong className="block break-all font-bold text-forest">{email}</strong>
-              </p>
+              <div className="min-w-0 text-sm text-muted">
+                <p>
+                  {copy.gracias.emailPrefix}{' '}
+                  <strong className="block break-all font-bold text-forest">{email}</strong>
+                </p>
+                {offerPrice !== null && (
+                  <p className="mt-2 border-t border-leaf/15 pt-2">
+                    {copy.gracias.offerPrefix}{' '}
+                    <strong className="font-bold text-forest">
+                      {planName ? `${planName} · ` : ''}{formatCLP(offerPrice)}
+                    </strong>
+                  </p>
+                )}
+              </div>
             </div>
           )}
 

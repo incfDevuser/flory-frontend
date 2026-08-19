@@ -7,7 +7,7 @@ import Reveal from '../components/Reveal'
 import { useI18n, usePageMeta } from '../i18n'
 import { track } from '../lib/analytics'
 import { isValidEmail, submitLead } from '../lib/leads'
-import { PREMIUM_MONTHLY_PRICE, formatCLP, getPlans, getPriceVariant } from '../lib/pricing'
+import { LAUNCH_DEVICE_PRICE, PREMIUM_MONTHLY_PRICE, formatCLP, getPlans, getPriceVariant } from '../lib/pricing'
 import type { PlanId } from '../lib/pricing'
 
 type FormStatus = 'idle' | 'submitting'
@@ -43,8 +43,8 @@ export default function QuieroFlory() {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   }, [selectedId])
 
-  const handleSelect = (planId: PlanId, price: number) => {
-    track('select_plan', { plan: planId, price, priceVariant })
+  const handleSelect = (planId: PlanId, regularPrice: number, offerPrice: number) => {
+    track('select_plan', { plan: planId, price: offerPrice, regularPrice, priceVariant })
     setSelectedId(planId)
   }
 
@@ -72,7 +72,9 @@ export default function QuieroFlory() {
         email,
         name,
         selectedPlan: selectedPlan.id,
-        displayedPrice: selectedPlan.price,
+        regularPrice: selectedPlan.price,
+        displayedPrice: selectedPlan.offerPrice,
+        launchUnitPrice: LAUNCH_DEVICE_PRICE,
         priceVariant,
       },
       language,
@@ -81,11 +83,18 @@ export default function QuieroFlory() {
     if (result.ok) {
       track('submit_lead', {
         plan: selectedPlan.id,
-        displayedPrice: selectedPlan.price,
+        displayedPrice: selectedPlan.offerPrice,
+        regularPrice: selectedPlan.price,
         priceVariant,
         hasName: Boolean(name.trim()),
       })
-      navigate('/gracias', { state: { email: result.lead.email } })
+      navigate('/gracias', {
+        state: {
+          email: result.lead.email,
+          planName: selectedCopy?.name,
+          offerPrice: selectedPlan.offerPrice,
+        },
+      })
       return
     }
 
@@ -119,8 +128,12 @@ export default function QuieroFlory() {
                 <p className="text-[11px] font-bold tracking-[0.14em] text-muted uppercase">
                   {copy.lead.selectedLabel}
                 </p>
-                <p className="mt-1 font-display text-base font-bold text-forest">
-                  {selectedCopy.name} · {formatCLP(selectedPlan.price)}
+                <p className="mt-1 font-display text-base font-bold text-forest">{selectedCopy.name}</p>
+                <p className="mt-0.5 flex items-baseline gap-2">
+                  <del className="text-xs font-semibold text-muted">{formatCLP(selectedPlan.price)}</del>
+                  <strong className="font-display text-lg font-bold text-leaf-600">
+                    {formatCLP(selectedPlan.offerPrice)}
+                  </strong>
                 </p>
               </div>
               <button
@@ -143,6 +156,7 @@ export default function QuieroFlory() {
                   type="email"
                   inputMode="email"
                   autoComplete="email"
+                  maxLength={254}
                   required
                   value={email}
                   onChange={(event) => {
@@ -168,6 +182,7 @@ export default function QuieroFlory() {
                   name="name"
                   type="text"
                   autoComplete="given-name"
+                  maxLength={100}
                   value={name}
                   onChange={(event) => setName(event.target.value)}
                   placeholder={copy.lead.namePlaceholder}
@@ -228,7 +243,9 @@ export default function QuieroFlory() {
                       <IconMail className="size-5" />
                     </span>
                     <p className="text-sm leading-snug text-muted">
-                      <strong className="font-bold text-forest">{copy.quiero.availability.emailTitle}</strong>{' '}
+                      <strong className="font-bold text-forest">
+                        {copy.quiero.availability.emailTitle} {formatCLP(LAUNCH_DEVICE_PRICE)}
+                      </strong>{' '}
                       {copy.quiero.availability.emailText}
                     </p>
                   </div>
@@ -258,18 +275,34 @@ export default function QuieroFlory() {
                         )}
                       </div>
 
-                      <p className="mt-4 flex items-baseline gap-2">
-                        <span className="font-display text-[2.1rem] leading-none font-bold text-forest">
-                          {formatCLP(plan.price)}
-                        </span>
-                        <span className="text-xs font-semibold text-muted">{copy.quiero.oneTime}</span>
-                      </p>
+                      <div className="mt-4">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="rounded-full bg-lime-100 px-2.5 py-1 text-[10px] font-bold text-leaf-600">
+                            {copy.pricing.launchOffer}
+                          </span>
+                          <del className="text-xs font-semibold text-muted" aria-label={copy.pricing.regularPriceLabel}>
+                            {formatCLP(plan.price)}
+                          </del>
+                        </div>
+                        <p className="mt-2 flex items-baseline gap-2">
+                          <span className="font-display text-[2.1rem] leading-none font-bold text-forest">
+                            {formatCLP(plan.offerPrice)}
+                          </span>
+                          <span className="text-xs font-semibold text-muted">{copy.quiero.oneTime}</span>
+                        </p>
+                        {plan.deviceCount > 1 && (
+                          <p className="mt-1 text-xs font-bold text-leaf-600">
+                            {plan.deviceCount} × {formatCLP(LAUNCH_DEVICE_PRICE)} {copy.pricing.eachDevice}
+                          </p>
+                        )}
+                      </div>
 
                       {/* Altura mínima de dos líneas para que las tres listas
                           de features arranquen a la misma altura. */}
                       <p className="mt-4 min-h-11 text-sm leading-relaxed text-pretty text-muted">
                         {planCopy.description}
                       </p>
+                      <p className="mt-1 text-xs font-bold text-leaf-600">{planCopy.offerDetail}</p>
 
                       <ul className="mt-6 flex flex-1 flex-col gap-3">
                         {planCopy.features.map((feature) => (
@@ -292,7 +325,7 @@ export default function QuieroFlory() {
 
                       <button
                         type="button"
-                        onClick={() => handleSelect(plan.id, plan.price)}
+                        onClick={() => handleSelect(plan.id, plan.price, plan.offerPrice)}
                         className={`mt-6 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 font-display font-semibold transition hover:-translate-y-0.5 active:translate-y-0 ${
                           plan.featured
                             ? 'bg-leaf text-white shadow-[0_18px_32px_-18px_rgba(63,157,99,0.95)] hover:bg-leaf-600'
