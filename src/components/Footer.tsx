@@ -50,15 +50,20 @@ export default function Footer() {
             <img src={floryHeart} alt="" aria-hidden="true" className="size-6 object-contain" />
             © {new Date().getFullYear()} Flory. {copy.footer.copyright}
           </p>
-          <ul className="flex items-center gap-6">
+          <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
             <li>
-              <Link to="/" className="text-xs text-muted transition hover:text-forest">
+              <Link to="/terminos" className="text-xs text-muted transition hover:text-forest">
                 {copy.footer.terms}
               </Link>
             </li>
             <li>
-              <Link to="/" className="text-xs text-muted transition hover:text-forest">
+              <Link to="/privacidad" className="text-xs text-muted transition hover:text-forest">
                 {copy.footer.privacy}
+              </Link>
+            </li>
+            <li>
+              <Link to="/eliminar-cuenta" className="text-xs text-muted transition hover:text-forest">
+                {copy.footer.deleteAccount}
               </Link>
             </li>
           </ul>

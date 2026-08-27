@@ -293,6 +293,29 @@ const translations = {
       primary: 'Lo quiero',
       secondary: 'Tengo una duda',
     },
+    legal: {
+      terms: {
+        meta: {
+          title: 'Términos de Uso · Flory',
+          description: 'Términos de Uso de Flory, operado por Tame SpA en Santiago de Chile.',
+        },
+      },
+      privacy: {
+        meta: {
+          title: 'Política de Privacidad · Flory',
+          description: 'Qué datos trata Flory, con qué proveedores se comparten y cómo ejercer tus derechos.',
+        },
+      },
+      deleteAccount: {
+        meta: {
+          title: 'Eliminar tu cuenta · Flory',
+          description: 'Cómo eliminar tu cuenta de Flory y qué datos se borran.',
+        },
+      },
+      index: 'Contenido',
+      spanishOnly: 'Este documento está disponible solo en español: está redactado conforme a la legislación chilena.',
+      back: 'Volver al inicio',
+    },
     footer: {
       description: 'PlantTech hecha en Chile. Sensores que escuchan, IA que traduce.',
       columns: [
@@ -303,6 +326,7 @@ const translations = {
       copyright: 'Hecho con cariño en Santiago.',
       terms: 'Términos',
       privacy: 'Privacidad',
+      deleteAccount: 'Eliminar cuenta',
     },
   },
   en: {
@@ -584,6 +608,29 @@ const translations = {
       primary: 'I want one',
       secondary: 'I have a question',
     },
+    legal: {
+      terms: {
+        meta: {
+          title: 'Terms of Use · Flory',
+          description: 'Flory Terms of Use, operated by Tame SpA in Santiago, Chile.',
+        },
+      },
+      privacy: {
+        meta: {
+          title: 'Privacy Policy · Flory',
+          description: 'What data Flory processes, which providers receive it and how to exercise your rights.',
+        },
+      },
+      deleteAccount: {
+        meta: {
+          title: 'Delete your account · Flory',
+          description: 'How to delete your Flory account and which data is erased.',
+        },
+      },
+      index: 'Contents',
+      spanishOnly: 'This document is only available in Spanish: it is written under Chilean law.',
+      back: 'Back to home',
+    },
     footer: {
       description: 'PlantTech made in Chile. Sensors that listen, AI that translates.',
       columns: [
@@ -594,6 +641,7 @@ const translations = {
       copyright: 'Made with care in Santiago.',
       terms: 'Terms',
       privacy: 'Privacy',
+      deleteAccount: 'Delete account',
     },
   },
   pt: {
@@ -875,6 +923,29 @@ const translations = {
       primary: 'Eu quero',
       secondary: 'Tenho uma dúvida',
     },
+    legal: {
+      terms: {
+        meta: {
+          title: 'Termos de Uso · Flory',
+          description: 'Termos de Uso do Flory, operado pela Tame SpA em Santiago, Chile.',
+        },
+      },
+      privacy: {
+        meta: {
+          title: 'Política de Privacidade · Flory',
+          description: 'Quais dados o Flory trata, com quais fornecedores são compartilhados e como exercer seus direitos.',
+        },
+      },
+      deleteAccount: {
+        meta: {
+          title: 'Excluir sua conta · Flory',
+          description: 'Como excluir sua conta do Flory e quais dados são apagados.',
+        },
+      },
+      index: 'Conteúdo',
+      spanishOnly: 'Este documento está disponível apenas em espanhol: foi redigido conforme a legislação chilena.',
+      back: 'Voltar ao início',
+    },
     footer: {
       description: 'PlantTech feita no Chile. Sensores que escutam, IA que traduz.',
       columns: [
@@ -885,6 +956,7 @@ const translations = {
       copyright: 'Feito com carinho em Santiago.',
       terms: 'Termos',
       privacy: 'Privacidade',
+      deleteAccount: 'Excluir conta',
     },
   },
 } as const

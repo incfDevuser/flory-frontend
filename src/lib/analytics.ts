@@ -18,6 +18,8 @@ export type AnalyticsEvent =
   | 'submit_lead'
   | 'lead_error'
   | 'view_confirmation'
+  // Fuera del funnel: sirve para saber si las páginas legales se visitan.
+  | 'view_legal'
 
 export type AnalyticsProps = Record<string, string | number | boolean | undefined>
 
