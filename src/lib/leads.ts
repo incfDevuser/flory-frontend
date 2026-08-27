@@ -6,17 +6,16 @@
  */
 
 import { getAttribution } from './attribution'
-import type { PlanId, PriceVariant } from './pricing'
+import type { BillingPeriod, PlanId } from './pricing'
 import { insertSupabaseLead } from './supabase'
 
 export type LeadInput = {
   email: string
   name?: string
   selectedPlan: PlanId
-  regularPrice: number
+  billingPeriod: BillingPeriod
+  /** Precio del plan elegido en el período indicado, en CLP. 0 en Free. */
   displayedPrice: number
-  launchUnitPrice: number
-  priceVariant: PriceVariant
 }
 
 export type Lead = LeadInput & {
@@ -38,10 +37,8 @@ type LeadRow = {
   email: string
   name: string | null
   selected_plan: PlanId
-  regular_price: number
+  billing_period: BillingPeriod
   displayed_price: number
-  launch_unit_price: number
-  price_variant: PriceVariant
   utm_source: string | null
   utm_medium: string | null
   utm_campaign: string | null
@@ -81,10 +78,8 @@ export async function submitLead(input: LeadInput, language: string): Promise<Le
     email: input.email.trim().toLowerCase(),
     name: optionalText(input.name, 100),
     selectedPlan: input.selectedPlan,
-    regularPrice: input.regularPrice,
+    billingPeriod: input.billingPeriod,
     displayedPrice: input.displayedPrice,
-    launchUnitPrice: input.launchUnitPrice,
-    priceVariant: input.priceVariant,
     utmSource: optionalText(attribution.utmSource, 255),
     utmMedium: optionalText(attribution.utmMedium, 255),
     utmCampaign: optionalText(attribution.utmCampaign, 255),
@@ -101,10 +96,8 @@ export async function submitLead(input: LeadInput, language: string): Promise<Le
     email: lead.email,
     name: lead.name ?? null,
     selected_plan: lead.selectedPlan,
-    regular_price: lead.regularPrice,
+    billing_period: lead.billingPeriod,
     displayed_price: lead.displayedPrice,
-    launch_unit_price: lead.launchUnitPrice,
-    price_variant: lead.priceVariant,
     utm_source: lead.utmSource ?? null,
     utm_medium: lead.utmMedium ?? null,
     utm_campaign: lead.utmCampaign ?? null,

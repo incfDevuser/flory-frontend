@@ -7,8 +7,8 @@ import { LogoFlory } from './icons'
 // Las secciones que aún no existen apuntan al inicio en vez de simular
 // páginas que no están construidas.
 const columnHrefs = [
-  ['/#como-funciona', '/#que-mide', '/#la-app', '/#precios'],
-  ['/#dudas', '/', '/', '/'],
+  ['/#como-funciona', '/#funciones', '/#la-app', '/#precios'],
+  ['/#dudas', '/', '/', '/#sensor'],
   ['/', '/', '/', '/'],
 ]
 

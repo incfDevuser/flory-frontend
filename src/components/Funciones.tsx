@@ -1,142 +1,77 @@
-import { useState } from 'react'
 import floryIdea from '../assets/mascot/flory-idea.png'
-import sensorCloseup from '../assets/photos/sensor-in-pot-closeup.png'
 import { useI18n } from '../i18n'
-import { IconDrop, IconHumidity, IconSun, IconThermometer } from './icons'
+import { IconCamera, IconChat, IconDiagnosis, IconDrop, IconMapPin, IconRefresh, IconSparkle } from './icons'
 import Reveal from './Reveal'
 
-const blob = 'rounded-[46%_54%_42%_58%/48%_42%_58%_52%]'
-
-const metricVisuals = [
-  {
-    id: 'water',
-    Icon: IconDrop,
-    percent: 38,
-    color: 'var(--color-grape)',
-    tint: 'bg-grape-100 text-grape',
-  },
-  {
-    id: 'light',
-    Icon: IconSun,
-    percent: 72,
-    color: 'var(--color-amber)',
-    tint: 'bg-amber-100 text-amber',
-  },
-  {
-    id: 'humidity',
-    Icon: IconHumidity,
-    percent: 54,
-    color: 'var(--color-leaf)',
-    tint: 'bg-leaf-100 text-leaf',
-  },
-  {
-    id: 'temperature',
-    Icon: IconThermometer,
-    percent: 61,
-    color: 'var(--color-clay)',
-    tint: 'bg-[#fbe6dd] text-clay',
-  },
+/**
+ * Qué hace Flory.
+ *
+ * Sustituye a la antigua sección "Qué mide", que describía las cuatro
+ * señales del sensor. Ahora el protagonista es el software, así que la
+ * lista es de funciones reales de la app: nada de notificaciones, clima ni
+ * IA superior, que todavía no existen.
+ *
+ * El orden de `featureVisuals` sigue el de `copy.features.items`.
+ */
+const featureVisuals = [
+  { Icon: IconCamera, tint: 'bg-grape-100 text-grape' },
+  { Icon: IconDrop, tint: 'bg-leaf-100 text-leaf' },
+  { Icon: IconSparkle, tint: 'bg-amber-100 text-amber' },
+  { Icon: IconDiagnosis, tint: 'bg-[#fbe6dd] text-clay' },
+  { Icon: IconChat, tint: 'bg-grape-100 text-grape' },
+  { Icon: IconRefresh, tint: 'bg-leaf-100 text-leaf' },
+  { Icon: IconMapPin, tint: 'bg-amber-100 text-amber' },
 ]
 
-export default function QueMide() {
+export default function Funciones() {
   const { copy } = useI18n()
-  const [activeId, setActiveId] = useState('light')
-  const metrics = metricVisuals.map((metric, index) => ({ ...metric, ...copy.metrics.items[index] }))
-  const active = metrics.find((metric) => metric.id === activeId) ?? metrics[0]
-  const ActiveIcon = active.Icon
+  const features = copy.features.items.map((item, index) => ({ ...item, ...featureVisuals[index] }))
 
   return (
-    <section id="que-mide" className="relative overflow-hidden bg-cream pt-10 pb-32 sm:pt-16 sm:pb-40">
-      <span aria-hidden="true" className="absolute top-[22%] -left-16 size-40 rounded-full bg-lime-300/50" />
-      <span aria-hidden="true" className="absolute top-[58%] -right-16 size-40 rounded-full bg-grape-100/70" />
+    <section id="funciones" className="relative overflow-hidden bg-cream pt-10 pb-32 sm:pt-16 sm:pb-40">
+      <span aria-hidden="true" className="absolute top-[18%] -left-16 size-40 rounded-full bg-lime-300/50" />
+      <span aria-hidden="true" className="absolute top-[62%] -right-16 size-40 rounded-full bg-grape-100/70" />
 
-      <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 lg:grid-cols-2 lg:gap-16">
-        <Reveal className="order-2 lg:order-1">
-          <div className={`${blob} bg-cream-200 p-4 sm:p-6`}>
-            <div className={`${blob} aspect-square overflow-hidden bg-leaf-100`}>
-              <img
-                src={sensorCloseup}
-                alt={copy.metrics.imageAlt}
-                className="size-full object-cover"
-              />
-            </div>
-          </div>
+      <div className="relative mx-auto max-w-6xl px-6">
+        <Reveal className="text-center">
+          <p className="font-display text-xs font-semibold tracking-[0.18em] text-leaf uppercase">
+            {copy.features.eyebrow}
+          </p>
+          <h2 className="mx-auto mt-3 max-w-2xl font-display text-3xl leading-[1.15] font-bold text-balance sm:text-[2.6rem]">
+            {copy.features.title}
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-sm text-pretty text-muted sm:text-base">
+            {copy.features.description}
+          </p>
         </Reveal>
 
-        <div className="order-1 lg:order-2">
-          <Reveal>
-            <p className="font-display text-xs font-semibold tracking-[0.18em] text-leaf uppercase">
-              {copy.metrics.eyebrow}
-            </p>
-            <h2 className="mt-3 font-display text-3xl leading-[1.15] font-bold text-balance sm:text-[2.6rem]">
-              {copy.metrics.title}
-            </h2>
-          </Reveal>
+        <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {features.map((feature, index) => {
+            const { Icon } = feature
 
-          <Reveal delay={90}>
-            <div role="tablist" aria-label={copy.metrics.tabsLabel} className="mt-7 flex gap-1 rounded-full bg-cream-200 p-1.5">
-              {metrics.map((metric) => {
-                const selected = metric.id === active.id
-                return (
-                  <button
-                    key={metric.id}
-                    type="button"
-                    role="tab"
-                    id={`tab-${metric.id}`}
-                    aria-selected={selected}
-                    aria-controls={`panel-${metric.id}`}
-                    onClick={() => setActiveId(metric.id)}
-                    className={`flex-1 rounded-full px-2 py-2 text-xs font-bold transition sm:text-sm ${
-                      selected ? 'bg-white text-forest shadow-[0_10px_20px_-14px_rgba(31,74,44,0.8)]' : 'text-muted hover:text-forest'
-                    }`}
-                  >
-                    {metric.label}
-                  </button>
-                )
-              })}
-            </div>
-          </Reveal>
-
-          <Reveal delay={150}>
-            <div
-              role="tabpanel"
-              id={`panel-${active.id}`}
-              aria-labelledby={`tab-${active.id}`}
-              className="mt-5 rounded-[26px] bg-white p-6 shadow-[0_24px_46px_-30px_rgba(31,74,44,0.6)]"
-            >
-              <div className="flex items-center justify-between gap-4">
-                <span className="flex items-center gap-2 font-display text-sm font-bold text-forest">
-                  <span className={`grid size-7 place-items-center rounded-full ${active.tint}`}>
-                    <ActiveIcon className="size-4" />
+            return (
+              <Reveal key={feature.title} delay={index * 70} className="h-full">
+                <li className="flex h-full flex-col rounded-[26px] bg-white p-6 shadow-[0_22px_44px_-32px_rgba(31,74,44,0.6)]">
+                  <span className={`grid size-11 shrink-0 place-items-center rounded-full ${feature.tint}`}>
+                    <Icon className="size-5" />
                   </span>
-                  {active.label}
-                </span>
-                <span className="font-display text-sm font-bold text-forest">{active.value}</span>
-              </div>
+                  <h3 className="mt-4 font-display text-base font-bold text-forest">{feature.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-pretty text-muted">{feature.text}</p>
+                </li>
+              </Reveal>
+            )
+          })}
 
-              <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-cream-300/70">
-                <div
-                  className="h-full rounded-full transition-[width] duration-500 ease-out"
-                  style={{ width: `${active.percent}%`, backgroundColor: active.color }}
-                />
-              </div>
-
-              <p className="mt-4 text-sm leading-relaxed text-pretty text-muted">{active.description}</p>
-            </div>
-          </Reveal>
-
-          <Reveal delay={210}>
-            <div className="mt-4 flex items-center gap-4 rounded-[26px] bg-leaf-100 p-5">
+          <Reveal delay={features.length * 70} className="h-full">
+            <li className="flex h-full items-center gap-4 rounded-[26px] bg-leaf-100 p-6">
               <img src={floryIdea} alt="" aria-hidden="true" className="size-14 shrink-0 object-contain" />
               <div>
-                <h3 className="font-display text-sm font-bold">{copy.metrics.plainTitle}</h3>
-                <p className="mt-1 text-sm leading-relaxed text-pretty text-muted">
-                  {copy.metrics.plainText}
-                </p>
+                <h3 className="font-display text-base font-bold text-forest">{copy.features.plainTitle}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-pretty text-muted">{copy.features.plainText}</p>
               </div>
-            </div>
+            </li>
           </Reveal>
-        </div>
+        </ul>
       </div>
 
       <svg

@@ -1,33 +1,23 @@
 import leafPurple from '../assets/mascot/leaf-purple.png'
-import device from '../assets/photos/flory-device.png'
+import appHoy from '../assets/mockups-free/hoy.png'
 import { useI18n } from '../i18n'
 import CtaLoQuiero from './CtaLoQuiero'
-import { IconPlay, IconSun } from './icons'
+import { IconCamera, IconDrop, IconPlay } from './icons'
+import PhoneFrame from './PhoneFrame'
 
-function Ring({ value }: { value: number }) {
-  const radius = 15.5
-  const circumference = 2 * Math.PI * radius
+function IdentifyCard() {
+  const { copy } = useI18n()
 
   return (
-    <span className="relative inline-flex size-11 shrink-0 items-center justify-center">
-      <svg viewBox="0 0 36 36" aria-hidden="true" className="size-11 -rotate-90">
-        <circle cx="18" cy="18" r={radius} fill="none" stroke="#ebe5f9" strokeWidth="4" />
-        <circle
-          cx="18"
-          cy="18"
-          r={radius}
-          fill="none"
-          stroke="var(--color-grape)"
-          strokeWidth="4"
-          strokeLinecap="round"
-          strokeDasharray={`${(value / 100) * circumference} ${circumference}`}
-        />
-      </svg>
-      <span className="absolute font-display text-[11px] font-bold text-forest">
-        {value}
-        <span className="text-[8px]">%</span>
+    <div className="flex items-center gap-3 rounded-[22px] bg-white px-4 py-3 shadow-[0_18px_36px_-22px_rgba(31,74,44,0.55)]">
+      <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-grape-100 text-grape">
+        <IconCamera className="size-5" />
       </span>
-    </span>
+      <div>
+        <p className="text-xs font-semibold text-muted">{copy.hero.identifyLabel}</p>
+        <p className="font-display text-sm font-bold text-forest">{copy.hero.identifyValue}</p>
+      </div>
+    </div>
   )
 }
 
@@ -36,29 +26,12 @@ function WaterCard() {
 
   return (
     <div className="flex items-center gap-3 rounded-[22px] bg-white px-4 py-3 shadow-[0_18px_36px_-22px_rgba(31,74,44,0.55)]">
-      <Ring value={38} />
-      <div>
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-bold text-[#b07a1e]">
-          <span className="size-1.5 rounded-full bg-amber" />
-          {copy.hero.waterStatus}
-        </span>
-        <p className="mt-1 text-xs font-semibold text-muted">{copy.hero.waterTip}</p>
-      </div>
-    </div>
-  )
-}
-
-function SunCard() {
-  const { copy } = useI18n()
-
-  return (
-    <div className="flex items-center gap-3 rounded-[22px] bg-white px-4 py-3 shadow-[0_18px_36px_-22px_rgba(31,74,44,0.55)]">
-      <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber">
-        <IconSun className="size-5" />
+      <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-leaf-100 text-leaf">
+        <IconDrop className="size-5" />
       </span>
       <div>
-        <p className="font-display text-sm font-bold text-forest">{copy.hero.sunValue}</p>
-        <p className="text-xs font-semibold text-muted">{copy.hero.sunTip}</p>
+        <p className="text-xs font-semibold text-muted">{copy.hero.waterLabel}</p>
+        <p className="font-display text-sm font-bold text-forest">{copy.hero.waterValue}</p>
       </div>
     </div>
   )
@@ -70,8 +43,15 @@ export default function Hero() {
   return (
     <section id="inicio" className="relative overflow-hidden bg-cream pt-32 sm:pt-36">
       <div className="relative z-20 mx-auto max-w-3xl px-6 text-center">
+        <p
+          className="inline-flex animate-rise items-center gap-2 rounded-full bg-lime-100 px-3.5 py-1.5 font-display text-xs font-bold text-leaf-600"
+          style={{ animationDelay: '40ms' }}
+        >
+          {copy.hero.badge}
+        </p>
+
         <h1
-          className="mt-6 animate-rise font-display text-[2.4rem] leading-[1.06] font-bold text-balance sm:text-6xl"
+          className="mt-5 animate-rise font-display text-[2.4rem] leading-[1.06] font-bold text-balance sm:text-6xl"
           style={{ animationDelay: '80ms' }}
         >
           {copy.hero.title[0]}
@@ -89,7 +69,7 @@ export default function Hero() {
           className="mt-8 flex animate-rise flex-col items-center justify-center gap-3 sm:flex-row"
           style={{ animationDelay: '240ms' }}
         >
-          <CtaLoQuiero label={copy.hero.primaryCta} location="hero" className="w-full sm:w-auto" />
+          <CtaLoQuiero label={copy.hero.primaryCta} location="hero" plan="FREE" className="w-full sm:w-auto" />
           <a
             href="#como-funciona"
             className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 font-display font-semibold text-forest shadow-[0_14px_30px_-20px_rgba(31,74,44,0.7)] transition hover:-translate-y-0.5 hover:bg-white/80 active:translate-y-0 sm:w-auto"
@@ -100,12 +80,12 @@ export default function Hero() {
         </div>
 
         <div className="mt-8 flex justify-center gap-3 sm:hidden">
+          <IdentifyCard />
           <WaterCard />
-          <SunCard />
         </div>
       </div>
 
-      <div className="relative mt-8 h-[380px] sm:mt-4 sm:h-[520px] lg:h-[560px]">
+      <div className="relative mt-10 h-[420px] sm:mt-6 sm:h-[560px] lg:h-[600px]">
         <svg
           viewBox="0 0 1440 400"
           preserveAspectRatio="none"
@@ -130,7 +110,6 @@ export default function Hero() {
           aria-hidden="true"
           className="absolute top-[62%] right-[20%] size-8 animate-float-slow rounded-full bg-amber sm:size-9"
         />
-        <span aria-hidden="true" className="absolute top-[64%] left-[21%] size-5 rounded-full bg-black/10" />
 
         <img
           src={leafPurple}
@@ -141,22 +120,22 @@ export default function Hero() {
 
         <span
           aria-hidden="true"
-          className="absolute bottom-[27%] left-1/2 h-5 w-40 -translate-x-1/2 rounded-[50%] bg-forest/25 blur-md sm:bottom-[25%] sm:w-56"
+          className="absolute bottom-[14%] left-1/2 h-5 w-40 -translate-x-1/2 rounded-[50%] bg-forest/20 blur-md sm:w-56"
         />
 
-        <img
-          src={device}
-          alt={copy.hero.deviceAlt}
-          className="absolute bottom-[24%] left-1/2 h-[260px] -translate-x-1/2 object-contain drop-shadow-[0_24px_30px_rgba(31,74,44,0.25)] sm:bottom-[22%] sm:h-[350px] lg:h-[400px]"
+        <PhoneFrame
+          src={appHoy}
+          alt={copy.hero.appAlt}
+          priority
+          className="absolute bottom-[16%] left-1/2 w-[168px] -translate-x-1/2 sm:w-[224px] lg:w-[244px]"
         />
 
         <div className="absolute top-[34%] left-[5%] hidden sm:block">
+          <IdentifyCard />
+        </div>
+        <div className="absolute top-[54%] right-[5%] hidden sm:block">
           <WaterCard />
         </div>
-        <div className="absolute top-[52%] right-[5%] hidden sm:block">
-          <SunCard />
-        </div>
-
       </div>
     </section>
   )

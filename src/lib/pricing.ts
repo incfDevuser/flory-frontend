@@ -1,112 +1,59 @@
 /**
  * Fuente única de verdad de precios y planes.
  *
- * Los precios NO viven en i18n.tsx porque son dinámicos por variante de
- * A/B testing. El i18n solo aporta etiquetas ("pago único", "al mes").
- * Todos los precios son CLP con IVA incluido, en los tres idiomas.
- */
-
-/**
- * Interruptor del A/B testing de precios.
+ * Flory es una app: los planes son suscripciones, no dispositivos. Los
+ * precios NO viven en i18n.tsx porque son los mismos en los tres idiomas
+ * (CLP, IVA incluido); el i18n solo aporta etiquetas ("al mes", "al año").
  *
- * `false` → todo el mundo ve la variante B ($39.990) como precio normal.
- * `true`  → el precio normal se reparte 33/33/33 y queda estable por sesión.
- * La oferta de lanzamiento permanece fija en $19.990 por dispositivo.
+ * Estado comercial: solo FREE está activo. PLUS y PRO existen en la base de
+ * datos de la app pero todavía no se pueden contratar (los pagos no están
+ * implementados), así que en la web se muestran como "Próximamente" y la
+ * única acción posible es dejar el correo.
  */
-export const AB_TESTING_ENABLED = false
 
-export const PRICE_VARIANTS = {
-  A: 34990,
-  B: 39990,
-  C: 44990,
-} as const
+export type PlanId = 'FREE' | 'PLUS' | 'PRO'
 
-export type PriceVariant = keyof typeof PRICE_VARIANTS
-
-export const DEFAULT_PRICE_VARIANT: PriceVariant = 'B'
-
-/** Sobreprecio del bundle con 12 meses de Premium. Constante entre variantes. */
-export const PREMIUM_BUNDLE_DELTA = 10000
-
-/** Meses de Premium incluidos en el bundle. */
-export const PREMIUM_BUNDLE_MONTHS = 12
-
-/** Precio mensual de Flory Premium una vez terminado el período incluido. */
-export const PREMIUM_MONTHLY_PRICE = 3990
-
-/** Precio de lanzamiento por cada dispositivo para quienes dejan su correo. */
-export const LAUNCH_DEVICE_PRICE = 19990
-
-/** Pack de 3 sensores. Precio fijo, fuera del experimento. */
-export const CASA_PRICE = 94990
-
-export type PlanId = 'FLORY' | 'FLORY_PREMIUM' | 'FLORY_CASA'
+export type BillingPeriod = 'monthly' | 'annual'
 
 export type Plan = {
   id: PlanId
-  /** Precio normal mostrado como referencia. */
-  price: number
-  /** Total promocional que se guarda en `displayedPrice` al enviar el lead. */
-  offerPrice: number
-  deviceCount: number
+  /** Precio mensual en CLP. 0 en el plan gratuito. */
+  monthlyPrice: number
+  /** Precio anual en CLP. Equivale a 10 meses: dos meses gratis. */
+  annualPrice: number
+  /** `false` mientras el plan no se pueda contratar: se marca "Próximamente". */
+  available: boolean
+  /** Plan destacado con el distintivo "Más elegido". */
   featured: boolean
 }
 
-const variantStorageKey = 'flory-price-variant'
-
-function isPriceVariant(value: string | null): value is PriceVariant {
-  return value === 'A' || value === 'B' || value === 'C'
-}
-
 /**
- * Devuelve la variante de precio de esta sesión.
- *
- * Se persiste en sessionStorage para que el usuario vea el mismo precio
- * en la landing y en la página de planes: si cambiara entre pasos, el
- * experimento no mediría nada.
+ * Meses que se ahorran al pagar el año completo. Se deriva de los precios
+ * (29900 ≈ 2990 × 10) y se usa solo para la etiqueta de ahorro.
  */
-export function getPriceVariant(): PriceVariant {
-  if (!AB_TESTING_ENABLED) return DEFAULT_PRICE_VARIANT
+export const ANNUAL_FREE_MONTHS = 2
 
-  try {
-    const stored = sessionStorage.getItem(variantStorageKey)
-    if (isPriceVariant(stored)) return stored
+const PLANS: Plan[] = [
+  { id: 'FREE', monthlyPrice: 0, annualPrice: 0, available: true, featured: false },
+  { id: 'PLUS', monthlyPrice: 2990, annualPrice: 29900, available: false, featured: true },
+  { id: 'PRO', monthlyPrice: 4990, annualPrice: 49900, available: false, featured: false },
+]
 
-    const variants = Object.keys(PRICE_VARIANTS) as PriceVariant[]
-    const picked = variants[Math.floor(Math.random() * variants.length)]
-    sessionStorage.setItem(variantStorageKey, picked)
-    return picked
-  } catch {
-    // Safari en modo privado puede lanzar al tocar sessionStorage.
-    return DEFAULT_PRICE_VARIANT
-  }
+export function getPlans(): Plan[] {
+  return PLANS
 }
 
-export function getPlans(variant: PriceVariant): Plan[] {
-  const base = PRICE_VARIANTS[variant]
+export function getPlan(id: PlanId): Plan | null {
+  return PLANS.find((plan) => plan.id === id) ?? null
+}
 
-  return [
-    { id: 'FLORY', price: base, offerPrice: LAUNCH_DEVICE_PRICE, deviceCount: 1, featured: false },
-    {
-      id: 'FLORY_PREMIUM',
-      price: base + PREMIUM_BUNDLE_DELTA,
-      offerPrice: LAUNCH_DEVICE_PRICE + PREMIUM_BUNDLE_DELTA,
-      deviceCount: 1,
-      featured: true,
-    },
-    {
-      id: 'FLORY_CASA',
-      price: CASA_PRICE,
-      offerPrice: LAUNCH_DEVICE_PRICE * 3,
-      deviceCount: 3,
-      featured: false,
-    },
-  ]
+export function isPlanId(value: string | null | undefined): value is PlanId {
+  return value === 'FREE' || value === 'PLUS' || value === 'PRO'
 }
 
 const clpFormatter = new Intl.NumberFormat('es-CL')
 
-/** 39990 → "$39.990". Mismo formato en los tres idiomas: los precios son CLP. */
+/** 2990 → "$2.990". Mismo formato en los tres idiomas: los precios son CLP. */
 export function formatCLP(value: number): string {
   return `$${clpFormatter.format(value)}`
 }

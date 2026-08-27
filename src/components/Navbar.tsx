@@ -7,7 +7,7 @@ import LanguagePicker from './LanguagePicker'
 
 // Van con `/` delante para que también funcionen desde /quiero-flory:
 // ScrollRestoration se encarga de saltar a la sección al llegar.
-const linkHrefs = ['/#como-funciona', '/#que-mide', '/#la-app', '/#precios', '/#dudas']
+const linkHrefs = ['/#como-funciona', '/#funciones', '/#la-app', '/#precios', '/#dudas']
 
 export default function Navbar() {
   const { copy } = useI18n()
@@ -50,6 +50,7 @@ export default function Navbar() {
           <CtaLoQuiero
             label={copy.nav.cta}
             location="navbar"
+            plan="FREE"
             size="sm"
             className="hidden sm:inline-flex"
           />
@@ -97,6 +98,7 @@ export default function Navbar() {
             <CtaLoQuiero
               label={copy.nav.cta}
               location="navbar_mobile"
+              plan="FREE"
               size="sm"
               className="w-full py-3"
               onNavigate={() => setOpen(false)}

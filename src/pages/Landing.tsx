@@ -3,11 +3,12 @@ import ComoFunciona from '../components/ComoFunciona'
 import CtaFinal from '../components/CtaFinal'
 import Dudas from '../components/Dudas'
 import Footer from '../components/Footer'
+import Funciones from '../components/Funciones'
 import Hero from '../components/Hero'
 import LaApp from '../components/LaApp'
 import Navbar from '../components/Navbar'
 import Precios from '../components/Precios'
-import QueMide from '../components/QueMide'
+import SensorTeaser from '../components/SensorTeaser'
 import { useI18n, usePageMeta } from '../i18n'
 import { track } from '../lib/analytics'
 
@@ -25,9 +26,10 @@ export default function Landing() {
       <main>
         <Hero />
         <ComoFunciona />
-        <QueMide />
+        <Funciones />
         <LaApp />
         <Precios />
+        <SensorTeaser />
         <Dudas />
         <CtaFinal />
       </main>

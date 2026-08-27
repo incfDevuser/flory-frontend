@@ -133,6 +133,78 @@ export function IconHumidity({ className = '' }: IconProps) {
   )
 }
 
+export function IconCamera({ className = '' }: IconProps) {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className={className}>
+      <path
+        d="M2.8 7.4c0-1 .8-1.8 1.8-1.8h1.3l.9-1.6h6.4l.9 1.6h1.3c1 0 1.8.8 1.8 1.8v6.4c0 1-.8 1.8-1.8 1.8H4.6a1.8 1.8 0 0 1-1.8-1.8V7.4Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      <circle cx="10" cy="10.6" r="2.9" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  )
+}
+
+export function IconChat({ className = '' }: IconProps) {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className={className}>
+      <path
+        d="M17 9.6c0 3.2-3.1 5.8-7 5.8-.8 0-1.5-.1-2.2-.3l-3.6 1.3 1.2-3A5.4 5.4 0 0 1 3 9.6c0-3.2 3.1-5.8 7-5.8s7 2.6 7 5.8Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      <path d="M7.4 9.6h5.2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+export function IconDiagnosis({ className = '' }: IconProps) {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className={className}>
+      <circle cx="9" cy="9" r="5.2" stroke="currentColor" strokeWidth="1.5" />
+      <path d="m12.9 12.9 3.3 3.3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      <path d="M9 6.7v4.6M6.7 9h4.6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+export function IconRefresh({ className = '' }: IconProps) {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className={className}>
+      <path
+        d="M16 8.4A6.2 6.2 0 0 0 5.2 6.1M4 11.6a6.2 6.2 0 0 0 10.8 2.3"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+      <path
+        d="M16.4 4.4v4h-4M3.6 15.6v-4h4"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+export function IconMapPin({ className = '' }: IconProps) {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className={className}>
+      <path
+        d="M10 17.4c3.1-3.4 4.7-6 4.7-8a4.7 4.7 0 1 0-9.4 0c0 2 1.6 4.6 4.7 8Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      <circle cx="10" cy="9.2" r="1.9" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  )
+}
+
 export function IconBox({ className = '' }: IconProps) {
   return (
     <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className={className}>

@@ -5,15 +5,13 @@ import { IconMail } from '../components/icons'
 import PageHeader from '../components/PageHeader'
 import { useI18n, usePageMeta } from '../i18n'
 import { track } from '../lib/analytics'
-import { formatCLP } from '../lib/pricing'
 
 export default function Gracias() {
   const { copy } = useI18n()
   const location = useLocation()
-  const state = location.state as { email?: unknown; planName?: unknown; offerPrice?: unknown } | null
+  const state = location.state as { email?: unknown; planName?: unknown } | null
   const email = typeof state?.email === 'string' ? state.email : null
   const planName = typeof state?.planName === 'string' ? state.planName : null
-  const offerPrice = typeof state?.offerPrice === 'number' ? state.offerPrice : null
   usePageMeta(copy.gracias.meta.title, copy.gracias.meta.description)
 
   useEffect(() => {
@@ -59,12 +57,10 @@ export default function Gracias() {
                   {copy.gracias.emailPrefix}{' '}
                   <strong className="block break-all font-bold text-forest">{email}</strong>
                 </p>
-                {offerPrice !== null && (
+                {planName && (
                   <p className="mt-2 border-t border-leaf/15 pt-2">
-                    {copy.gracias.offerPrefix}{' '}
-                    <strong className="font-bold text-forest">
-                      {planName ? `${planName} · ` : ''}{formatCLP(offerPrice)}
-                    </strong>
+                    {copy.gracias.planPrefix}{' '}
+                    <strong className="font-bold text-forest">{planName}</strong>
                   </p>
                 )}
               </div>

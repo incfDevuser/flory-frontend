@@ -44,6 +44,7 @@ export default function CtaFinal() {
             <CtaLoQuiero
               label={copy.cta.primary}
               location="cta_final"
+              plan="FREE"
               variant="lime"
               className="w-full sm:w-auto"
             />
