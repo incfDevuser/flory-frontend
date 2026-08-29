@@ -85,7 +85,7 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="relative mt-10 h-[420px] sm:mt-6 sm:h-[560px] lg:h-[600px]">
+      <div className="relative mt-20 h-[420px] sm:mt-20 sm:h-[560px] lg:h-[600px]">
         <svg
           viewBox="0 0 1440 400"
           preserveAspectRatio="none"
