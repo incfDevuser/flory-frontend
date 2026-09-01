@@ -5,6 +5,8 @@ import CtaLoQuiero from './CtaLoQuiero'
 import { LogoFlory } from './icons'
 import LanguagePicker from './LanguagePicker'
 
+import LogotipoFlory from "../assets/logo/LogotipoFlory.png"
+
 // Van con `/` delante para que también funcionen desde /quiero-flory:
 // ScrollRestoration se encarga de saltar a la sección al llegar.
 const linkHrefs = ['/#como-funciona', '/#funciones', '/#la-app', '/#precios', '/#dudas']
@@ -30,7 +32,7 @@ export default function Navbar() {
         }`}
       >
         <Link to="/" className="flex items-center gap-1" aria-label={copy.nav.homeLabel}>
-          <LogoFlory />
+          <img src={LogotipoFlory} alt="Logotipo Flory" className="h-8" />
         </Link>
 
         <ul className="hidden items-center gap-1 lg:flex">
