@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useI18n } from '../i18n'
 import CtaLoQuiero from './CtaLoQuiero'
-import { LogoFlory } from './icons'
 import LanguagePicker from './LanguagePicker'
 
 import LogotipoFlory from "../assets/logo/LogotipoFlory.png"

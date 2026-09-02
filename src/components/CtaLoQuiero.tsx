@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom'
 import { track } from '../lib/analytics'
+import { INSTAGRAM_URL } from '../lib/links'
 import type { PlanId } from '../lib/pricing'
 import { IconArrowRight } from './icons'
 
 /**
- * CTA de entrada al funnel. Es el único punto de entrada, así que centraliza
- * la navegación y el evento de analítica: si un CTA nuevo no usa este
- * componente, no se mide.
+ * CTA principal de Flory. Centraliza la navegación y el evento de analítica:
+ * Free lleva al Instagram de Flory; Plus y Pro entran al funnel de interés.
  *
  * `plan` preselecciona un plan en /quiero-flory mediante `?plan=`. Va en la
  * URL y no en el state del router para que el enlace siga funcionando si se
@@ -52,14 +52,27 @@ export default function CtaLoQuiero({
   className = '',
   onNavigate,
 }: Props) {
+  const handleClick = () => {
+    track('click_lo_quiero', { location, plan, destination: plan === 'FREE' ? 'instagram' : 'waitlist' })
+    onNavigate?.()
+  }
+
+  const classes = `inline-flex items-center justify-center gap-2 rounded-full transition hover:-translate-y-0.5 active:translate-y-0 ${variants[variant]} ${sizes[size]} ${className}`
+
+  if (plan === 'FREE') {
+    return (
+      <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer" onClick={handleClick} className={classes}>
+        {label}
+        <IconArrowRight className={size === 'sm' ? 'size-4' : 'size-5'} />
+      </a>
+    )
+  }
+
   return (
     <Link
       to={plan ? `/quiero-flory?plan=${plan}` : '/quiero-flory'}
-      onClick={() => {
-        track('click_lo_quiero', { location, plan })
-        onNavigate?.()
-      }}
-      className={`inline-flex items-center justify-center gap-2 rounded-full transition hover:-translate-y-0.5 active:translate-y-0 ${variants[variant]} ${sizes[size]} ${className}`}
+      onClick={handleClick}
+      className={classes}
     >
       {label}
       <IconArrowRight className={size === 'sm' ? 'size-4' : 'size-5'} />

@@ -7,6 +7,7 @@ import Reveal from '../components/Reveal'
 import { useI18n, usePageMeta } from '../i18n'
 import { track } from '../lib/analytics'
 import { isValidEmail, submitLead } from '../lib/leads'
+import { INSTAGRAM_URL } from '../lib/links'
 import { formatCLP, getPlans, isPlanId } from '../lib/pricing'
 import type { PlanId } from '../lib/pricing'
 
@@ -326,18 +327,27 @@ export default function QuieroFlory() {
                         ))}
                       </ul>
 
-                      <button
-                        type="button"
-                        onClick={() => handleSelect(plan.id, plan.monthlyPrice)}
-                        className={`mt-6 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 font-display font-semibold transition hover:-translate-y-0.5 active:translate-y-0 ${
-                          plan.available
-                            ? 'bg-leaf text-white shadow-[0_18px_32px_-18px_rgba(63,157,99,0.95)] hover:bg-leaf-600'
-                            : 'text-forest ring-1 ring-forest/15 hover:bg-cream-200'
-                        }`}
-                      >
-                        {planCopy.cta}
-                        <IconArrowRight className="size-5" />
-                      </button>
+                      {plan.id === 'FREE' ? (
+                        <a
+                          href={INSTAGRAM_URL}
+                          target="_blank"
+                          rel="noreferrer"
+                          onClick={() => track('select_plan', { plan: plan.id, price: 0, destination: 'instagram' })}
+                          className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-leaf px-6 py-3.5 font-display font-semibold text-white shadow-[0_18px_32px_-18px_rgba(63,157,99,0.95)] transition hover:-translate-y-0.5 hover:bg-leaf-600 active:translate-y-0"
+                        >
+                          {planCopy.cta}
+                          <IconArrowRight className="size-5" />
+                        </a>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => handleSelect(plan.id, plan.monthlyPrice)}
+                          className="mt-6 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 font-display font-semibold text-forest ring-1 ring-forest/15 transition hover:-translate-y-0.5 hover:bg-cream-200 active:translate-y-0"
+                        >
+                          {planCopy.cta}
+                          <IconArrowRight className="size-5" />
+                        </button>
+                      )}
                     </article>
                   </Reveal>
                 )
