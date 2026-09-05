@@ -32,11 +32,13 @@ const translations = {
       closeMenu: 'Cerrar menú',
     },
     hero: {
-      badge: 'Gratis para tu primera planta',
+      badge: 'Ya disponible en App Store',
       title: ['Tu planta te dice', 'lo que necesita.'],
       description:
         'Identifícala con una foto, sabe cuándo regarla y conversa con ella cuando quieras. Todo desde la app.',
-      primaryCta: 'Empezar gratis',
+      primaryCta: 'Descargar para iPhone',
+      androidCta: 'Android',
+      comingSoon: 'Pronto',
       secondaryCta: 'Ver cómo funciona',
       identifyLabel: 'Identificada por foto',
       identifyValue: 'Potus',
@@ -343,11 +345,13 @@ const translations = {
       closeMenu: 'Close menu',
     },
     hero: {
-      badge: 'Free for your first plant',
+      badge: 'Now available on the App Store',
       title: ['Your plant tells you', 'what it needs.'],
       description:
         'Identify it from a photo, know when to water it and chat with it whenever you want. All from the app.',
-      primaryCta: 'Start free',
+      primaryCta: 'Download for iPhone',
+      androidCta: 'Android',
+      comingSoon: 'Coming soon',
       secondaryCta: 'See how it works',
       identifyLabel: 'Identified from a photo',
       identifyValue: 'Pothos',
@@ -654,11 +658,13 @@ const translations = {
       closeMenu: 'Fechar menu',
     },
     hero: {
-      badge: 'Grátis para a sua primeira planta',
+      badge: 'Já disponível na App Store',
       title: ['Sua planta diz', 'o que precisa.'],
       description:
         'Identifique por foto, saiba quando regar e converse com ela quando quiser. Tudo pelo app.',
-      primaryCta: 'Começar grátis',
+      primaryCta: 'Baixar para iPhone',
+      androidCta: 'Android',
+      comingSoon: 'Em breve',
       secondaryCta: 'Veja como funciona',
       identifyLabel: 'Identificada por foto',
       identifyValue: 'Jiboia',

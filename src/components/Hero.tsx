@@ -1,6 +1,7 @@
 import leafPurple from '../assets/mascot/leaf-purple.png'
 import appHoy from '../assets/mockups-free/hoy.png'
 import { useI18n } from '../i18n'
+import { APP_STORE_URL } from '../lib/links'
 import CtaLoQuiero from './CtaLoQuiero'
 import { IconCamera, IconDrop, IconPlay } from './icons'
 import PhoneFrame from './PhoneFrame'
@@ -65,14 +66,29 @@ export default function Hero() {
           {copy.hero.description}
         </p>
 
-        <div
-          className="mt-8 flex animate-rise flex-col items-center justify-center gap-3 sm:flex-row"
-          style={{ animationDelay: '240ms' }}
-        >
-          <CtaLoQuiero label={copy.hero.primaryCta} location="hero" plan="FREE" className="w-full sm:w-auto" />
+        <div className="mt-8 animate-rise" style={{ animationDelay: '240ms' }}>
+          <div className="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+            <CtaLoQuiero
+              label={copy.hero.primaryCta}
+              location="hero"
+              plan="FREE"
+              href={APP_STORE_URL}
+              destination="app_store"
+              className="w-full sm:w-auto"
+            />
+            <div
+              aria-label={`${copy.hero.androidCta}: ${copy.hero.comingSoon}`}
+              className="inline-flex w-full cursor-default items-center justify-center gap-3 rounded-full border border-forest/10 bg-white/75 px-6 py-3.5 font-display font-semibold text-forest shadow-[0_14px_30px_-22px_rgba(31,74,44,0.55)] sm:w-auto"
+            >
+              <span>{copy.hero.androidCta}</span>
+              <span className="rounded-full bg-amber/20 px-2.5 py-1 text-[0.65rem] font-bold tracking-[0.08em] text-forest uppercase">
+                {copy.hero.comingSoon}
+              </span>
+            </div>
+          </div>
           <a
             href="#como-funciona"
-            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 font-display font-semibold text-forest shadow-[0_14px_30px_-20px_rgba(31,74,44,0.7)] transition hover:-translate-y-0.5 hover:bg-white/80 active:translate-y-0 sm:w-auto"
+            className="mt-4 inline-flex items-center justify-center gap-2 font-display text-sm font-semibold text-forest underline decoration-forest/25 underline-offset-4 transition hover:decoration-forest"
           >
             <IconPlay className="size-4" />
             {copy.hero.secondaryCta}

@@ -37,6 +37,8 @@ type Props = {
   label: string
   location: CtaLocation
   plan?: PlanId
+  href?: string
+  destination?: string
   variant?: keyof typeof variants
   size?: keyof typeof sizes
   className?: string
@@ -47,21 +49,27 @@ export default function CtaLoQuiero({
   label,
   location,
   plan,
+  href,
+  destination,
   variant = 'leaf',
   size = 'md',
   className = '',
   onNavigate,
 }: Props) {
   const handleClick = () => {
-    track('click_lo_quiero', { location, plan, destination: plan === 'FREE' ? 'instagram' : 'waitlist' })
+    track('click_lo_quiero', {
+      location,
+      plan,
+      destination: destination ?? (plan === 'FREE' ? 'instagram' : 'waitlist'),
+    })
     onNavigate?.()
   }
 
   const classes = `inline-flex items-center justify-center gap-2 rounded-full transition hover:-translate-y-0.5 active:translate-y-0 ${variants[variant]} ${sizes[size]} ${className}`
 
-  if (plan === 'FREE') {
+  if (href || plan === 'FREE') {
     return (
-      <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer" onClick={handleClick} className={classes}>
+      <a href={href ?? INSTAGRAM_URL} target="_blank" rel="noreferrer" onClick={handleClick} className={classes}>
         {label}
         <IconArrowRight className={size === 'sm' ? 'size-4' : 'size-5'} />
       </a>
