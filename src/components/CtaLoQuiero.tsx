@@ -6,7 +6,7 @@ import { IconArrowRight } from './icons'
 
 /**
  * CTA principal de Flory. Centraliza la navegación y el evento de analítica:
- * Free lleva al Instagram de Flory; Plus y Pro entran al funnel de interés.
+ * Free lleva al Instagram de Flory; Plus y Sensor entran al funnel de interés.
  *
  * `plan` preselecciona un plan en /quiero-flory mediante `?plan=`. Va en la
  * URL y no en el state del router para que el enlace siga funcionando si se

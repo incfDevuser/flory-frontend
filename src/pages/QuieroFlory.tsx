@@ -17,7 +17,7 @@ type FormError = 'invalid_email' | 'network' | null
 /**
  * Paso 1 (elegir plan) y paso 2 (dejar el correo).
  *
- * Nada se cobra aquí: Plus y Pro todavía no se pueden contratar, así que
+ * Nada se cobra aquí: Plus y Sensor todavía no se pueden contratar, así que
  * incluso el plan de pago termina en una lista de espera. El período de
  * facturación mostrado es siempre mensual, que es el precio que se enseña
  * en las tarjetas.
@@ -149,6 +149,7 @@ export default function QuieroFlory() {
                   )}
                 </p>
                 <p className="mt-0.5 text-sm font-semibold text-muted">
+                  {selectedPlan.priceFrom ? `${copy.pricing.priceFrom} ` : ''}
                   {formatCLP(selectedPlan.monthlyPrice)}{' '}
                   {selectedPlan.monthlyPrice === 0 ? copy.pricing.forever : copy.pricing.perMonth}
                 </p>
@@ -304,15 +305,21 @@ export default function QuieroFlory() {
 
                       <div className="mt-4">
                         <p className="flex items-baseline gap-2">
+                          {plan.priceFrom && (
+                            <span className="text-xs font-semibold text-muted">{copy.pricing.priceFrom}</span>
+                          )}
                           <span className="font-display text-[2.1rem] leading-none font-bold text-forest">
                             {formatCLP(plan.monthlyPrice)}
+                            {plan.priceFrom && '*'}
                           </span>
                           <span className="text-xs font-semibold text-muted">
                             {isFree ? copy.pricing.forever : copy.pricing.perMonth}
                           </span>
                         </p>
                         <p className="mt-2 min-h-8 text-xs font-bold text-leaf-600">
-                          {isFree ? '' : `${formatCLP(plan.annualPrice)} ${copy.pricing.annualSuffix}`}
+                          {isFree
+                            ? ''
+                            : `${plan.priceFrom ? `${copy.pricing.priceFrom} ` : ''}${formatCLP(plan.annualPrice)} ${copy.pricing.annualSuffix}`}
                         </p>
                       </div>
 
@@ -368,6 +375,7 @@ export default function QuieroFlory() {
 
             <Reveal delay={320} className="mt-10 text-center">
               <p className="mx-auto max-w-md text-sm text-pretty text-muted">{copy.quiero.disclaimer}</p>
+              <p className="mx-auto mt-2 max-w-lg text-xs text-pretty text-muted/80">{copy.pricing.priceFromNote}</p>
               <p className="mx-auto mt-2 max-w-lg text-xs text-pretty text-muted/80">{copy.pricing.note}</p>
               <Link
                 to="/"

@@ -5,13 +5,13 @@
  * precios NO viven en i18n.tsx porque son los mismos en los tres idiomas
  * (CLP, IVA incluido); el i18n solo aporta etiquetas ("al mes", "al año").
  *
- * Estado comercial: solo FREE está activo. PLUS y PRO existen en la base de
- * datos de la app pero todavía no se pueden contratar (los pagos no están
+ * Estado comercial: solo FREE está activo. PLUS y SENSOR existen en la base
+ * de datos de la app pero todavía no se pueden contratar (los pagos no están
  * implementados), así que en la web se muestran como "Próximamente" y la
  * única acción posible es dejar el correo.
  */
 
-export type PlanId = 'FREE' | 'PLUS' | 'PRO'
+export type PlanId = 'FREE' | 'PLUS' | 'SENSOR'
 
 export type BillingPeriod = 'monthly' | 'annual'
 
@@ -25,6 +25,11 @@ export type Plan = {
   available: boolean
   /** Plan destacado con el distintivo "Más elegido". */
   featured: boolean
+  /**
+   * `true` cuando el precio es un "desde": el plan Sensor parte en su precio
+   * base con un sensor incluido, así que se muestra "desde $5.990/mes*".
+   */
+  priceFrom: boolean
 }
 
 /**
@@ -34,9 +39,9 @@ export type Plan = {
 export const ANNUAL_FREE_MONTHS = 2
 
 const PLANS: Plan[] = [
-  { id: 'FREE', monthlyPrice: 0, annualPrice: 0, available: true, featured: false },
-  { id: 'PLUS', monthlyPrice: 2990, annualPrice: 29900, available: false, featured: true },
-  { id: 'PRO', monthlyPrice: 4990, annualPrice: 49900, available: false, featured: false },
+  { id: 'FREE', monthlyPrice: 0, annualPrice: 0, available: true, featured: false, priceFrom: false },
+  { id: 'PLUS', monthlyPrice: 2990, annualPrice: 29900, available: false, featured: true, priceFrom: false },
+  { id: 'SENSOR', monthlyPrice: 5990, annualPrice: 59900, available: false, featured: false, priceFrom: true },
 ]
 
 export function getPlans(): Plan[] {
@@ -48,7 +53,7 @@ export function getPlan(id: PlanId): Plan | null {
 }
 
 export function isPlanId(value: string | null | undefined): value is PlanId {
-  return value === 'FREE' || value === 'PLUS' || value === 'PRO'
+  return value === 'FREE' || value === 'PLUS' || value === 'SENSOR'
 }
 
 const clpFormatter = new Intl.NumberFormat('es-CL')

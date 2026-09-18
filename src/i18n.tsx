@@ -12,16 +12,16 @@ import type { ReactNode } from 'react'
  * Los precios NO viven aquí: están en `src/lib/pricing.ts`. Aquí solo van
  * las etiquetas ("al mes", "al año", "para siempre").
  *
- * Regla de honestidad: este copy solo describe lo que la app hace hoy. No
- * se mencionan notificaciones, clima, medios de pago ni una IA superior en
- * Pro, porque nada de eso está implementado todavía.
+ * Regla de honestidad: este copy solo describe lo que la app hace hoy o lo
+ * que cada plan compromete de forma explícita (los planes Plus y Sensor se
+ * muestran como "Próximamente" mientras no se puedan contratar).
  */
 const translations = {
   es: {
     meta: {
-      title: 'Flory · Tu planta te dice lo que necesita',
+      title: 'Flory · App para cuidar tus plantas y saber cuándo regarlas',
       description:
-        'Flory identifica tu planta con una foto, te dice cuándo regarla y diagnostica sus problemas. App de cuidado de plantas hecha en Chile.',
+        'Identifica tu planta con una foto, recibe su calendario de riego y diagnostica sus problemas. App chilena de cuidado de plantas, gratis en el App Store.',
     },
     language: { label: 'Idioma' },
     nav: {
@@ -132,24 +132,26 @@ const translations = {
     pricing: {
       eyebrow: 'Precios',
       title: 'Elige tu plan',
-      description: 'Free ya está listo. Plus y Pro llegan pronto.',
+      description: 'Free ya está listo. Plus y Sensor llegan pronto.',
       mostPopular: 'Más elegido',
       comingSoon: 'Próximamente',
       perMonth: 'al mes',
       forever: 'para siempre',
+      priceFrom: 'desde',
+      priceFromNote: '* El plan Sensor parte desde $5.990 al mes, con el sensor físico incluido.',
       annualSuffix: 'al año, equivalente a dos meses gratis.',
       plans: [
         {
           name: 'Free',
-          tagline: 'Para empezar a cuidar tu primera planta.',
+          tagline: 'Para empezar a cuidar tus primeras plantas.',
           features: [
-            '1 planta.',
-            'Calendario personalizado de riego.',
-            'Identificación de especies.',
-            'Chat con tu planta.',
+            '2 plantas.',
+            'Chat básico con tu planta.',
             '3 diagnósticos por fotografía al mes.',
-            'Máximo 2 diagnósticos por día.',
-            'Historial de los últimos 30 días.',
+            'Historial básico de diagnósticos.',
+            'Recomendaciones básicas.',
+            'Calendario de riego.',
+            'Notificaciones básicas.',
           ],
           cta: 'Empezar gratis',
         },
@@ -157,27 +159,30 @@ const translations = {
           name: 'Plus',
           tagline: 'Para quienes tienen varias plantas en casa.',
           features: [
-            'Hasta 5 plantas.',
-            'Todo lo incluido en Free.',
-            '20 diagnósticos por fotografía al mes.',
-            'Máximo 5 diagnósticos por día.',
-            'Historial completo.',
-            'Seguimiento de diagnósticos.',
-            'Recomendaciones adaptadas a cada planta.',
+            'Plantas ilimitadas.',
+            'Chat avanzado con tu planta.',
+            '15 diagnósticos por fotografía al mes.',
+            'Historial completo de diagnósticos.',
+            'Recomendaciones personalizadas.',
+            'Calendario de riego adaptativo.',
+            'Notificaciones personalizadas.',
           ],
           cta: 'Avísame cuando esté',
         },
         {
-          name: 'Pro',
-          tagline: 'Para colecciones grandes y uso frecuente.',
+          name: 'Sensor',
+          tagline: 'La experiencia completa, con el sensor físico incluido.',
           features: [
-            'Plantas ilimitadas.',
+            'Sensor físico incluido.',
             'Todo lo incluido en Plus.',
-            '60 diagnósticos por fotografía al mes.',
-            'Máximo 10 diagnósticos por día.',
-            'Historial completo.',
-            'Seguimiento de diagnósticos.',
-            'Mayor capacidad de uso de las funciones con inteligencia artificial.',
+            'Chat avanzado con contexto del sensor.',
+            '30 diagnósticos por fotografía al mes.',
+            'Evolución de tu planta por fotos.',
+            'Calendario de riego basado en el sensor.',
+            'Notificaciones predictivas.',
+            'Flory Score.',
+            'Monitoreo 24/7.',
+            'Predicciones con IA.',
           ],
           cta: 'Avísame cuando esté',
         },
@@ -185,16 +190,23 @@ const translations = {
       comparison: {
         title: 'Comparación',
         featureLabel: 'Característica',
+        includedLabel: 'Incluido',
+        notIncludedLabel: 'No incluido',
         monthlyPriceLabel: 'Precio mensual',
         annualPriceLabel: 'Precio anual',
         rows: [
-          { label: 'Plantas', values: ['1', '5', 'Ilimitadas'] },
-          { label: 'Diagnósticos al mes', values: ['3', '20', '60'] },
-          { label: 'Diagnósticos al día', values: ['2', '5', '10'] },
-          { label: 'Historial', values: ['30 días', 'Completo', 'Completo'] },
-          { label: 'Seguimiento', values: ['No', 'Sí', 'Sí'] },
-          { label: 'Chat', values: ['Sí', 'Sí', 'Sí'] },
-          { label: 'Identificación de especies', values: ['Sí', 'Sí', 'Sí'] },
+          { label: 'Plantas', values: ['2', 'Ilimitadas', 'Ilimitadas'] },
+          { label: 'Chat', values: ['Básico', 'Avanzado', 'Avanzado + contexto sensor'] },
+          { label: 'Diagnósticos', values: ['3/mes', '15/mes', '30/mes'] },
+          { label: 'Historial diagnósticos', values: ['Básico', 'Completo', 'Completo'] },
+          { label: 'Evolución por fotos', values: ['✗', '✗', '✓'] },
+          { label: 'Recomendaciones personalizadas', values: ['Básicas', '✓', '✓'] },
+          { label: 'Calendario de riego', values: ['✓', '✓ adaptativo', '✓ basado en sensor'] },
+          { label: 'Notificaciones', values: ['Básicas', 'Personalizadas', 'Predictivas'] },
+          { label: 'Flory Score', values: ['✗', '✗', '✓'] },
+          { label: 'Monitoreo', values: ['✗', '✗', '24/7'] },
+          { label: 'Predicciones IA', values: ['✗', '✗', '✓'] },
+          { label: 'Sensor físico', values: ['✗', '✗', 'Incluido'] },
         ],
       },
       founding: {
@@ -205,7 +217,7 @@ const translations = {
       },
       openPeriodNote: 'Durante el periodo de lanzamiento, el plan Free tiene límites ampliados.',
       cta: 'Empezar gratis',
-      note: 'Precios en pesos chilenos, IVA incluido. Plus y Pro todavía no están disponibles para contratar.',
+      note: 'Precios en pesos chilenos, IVA incluido. Plus y Sensor todavía no están disponibles para contratar.',
     },
     quiero: {
       meta: {
@@ -215,7 +227,7 @@ const translations = {
       back: 'Volver al inicio',
       eyebrow: 'Paso 1 de 2',
       title: 'Elige tu plan 🌱',
-      description: 'Free ya está listo. Plus y Pro llegan pronto: déjanos tu correo y te avisamos.',
+      description: 'Free ya está listo. Plus y Sensor llegan pronto: déjanos tu correo y te avisamos.',
       availability: {
         badge: 'Periodo de lanzamiento',
         launchTitle: 'Flory está en periodo de lanzamiento.',
@@ -263,7 +275,7 @@ const translations = {
         {
           question: '¿Flory es gratis?',
           answer:
-            'Sí. El plan Free te deja cuidar una planta con su calendario de riego, identificación por foto, chat y diagnósticos, sin pagar nada. Plus y Pro son planes de mayor capacidad que todavía no están disponibles para contratar.',
+            'Sí. El plan Free te deja cuidar dos plantas con su calendario de riego, identificación por foto, chat y diagnósticos, sin pagar nada. Plus y Sensor son planes de mayor capacidad que todavía no están disponibles para contratar.',
         },
         {
           question: '¿Necesito el sensor para usar la app?',
@@ -276,9 +288,9 @@ const translations = {
             'En diciembre. Servirá para medir la humedad del suelo y afinar el riego, pero la app seguirá funcionando igual sin él.',
         },
         {
-          question: '¿Qué diferencia hay entre Free, Plus y Pro?',
+          question: '¿Qué diferencia hay entre Free, Plus y Sensor?',
           answer:
-            'La capacidad. Free es para una planta y tres diagnósticos al mes. Plus llega a cinco plantas y veinte diagnósticos. Pro no tiene límite de plantas y llega a sesenta diagnósticos, además de seguimiento y recomendaciones por planta.',
+            'La capacidad y el sensor. Free es para dos plantas y tres diagnósticos al mes. Plus tiene plantas ilimitadas, quince diagnósticos y recomendaciones personalizadas. Sensor incluye el sensor físico, treinta diagnósticos, monitoreo 24/7, Flory Score y predicciones con IA.',
         },
         {
           question: '¿Funciona con cualquier planta?',
@@ -332,9 +344,9 @@ const translations = {
   },
   en: {
     meta: {
-      title: 'Flory · Your plant tells you what it needs',
+      title: 'Flory · Plant care app: know when to water your plants',
       description:
-        'Flory identifies your plant from a photo, tells you when to water it and diagnoses its problems. A plant care app made in Chile.',
+        'Identify your plant from a photo, get its watering schedule and diagnose its problems. A plant care app made in Chile, free on the App Store.',
     },
     language: { label: 'Language' },
     nav: {
@@ -445,24 +457,26 @@ const translations = {
     pricing: {
       eyebrow: 'Pricing',
       title: 'Choose your plan',
-      description: 'Free is ready. Plus and Pro are coming soon.',
+      description: 'Free is ready. Plus and Sensor are coming soon.',
       mostPopular: 'Most popular',
       comingSoon: 'Coming soon',
       perMonth: 'per month',
       forever: 'forever',
+      priceFrom: 'from',
+      priceFromNote: '* The Sensor plan starts at $5,990 per month, with the physical sensor included.',
       annualSuffix: 'per year, the equivalent of two months free.',
       plans: [
         {
           name: 'Free',
-          tagline: 'To start caring for your first plant.',
+          tagline: 'To start caring for your first plants.',
           features: [
-            '1 plant.',
-            'Personalised watering calendar.',
-            'Species identification.',
-            'Chat with your plant.',
+            '2 plants.',
+            'Basic chat with your plant.',
             '3 photo diagnoses per month.',
-            'Up to 2 diagnoses per day.',
-            'History of the last 30 days.',
+            'Basic diagnosis history.',
+            'Basic recommendations.',
+            'Watering calendar.',
+            'Basic notifications.',
           ],
           cta: 'Start free',
         },
@@ -470,27 +484,30 @@ const translations = {
           name: 'Plus',
           tagline: 'For people with several plants at home.',
           features: [
-            'Up to 5 plants.',
-            'Everything included in Free.',
-            '20 photo diagnoses per month.',
-            'Up to 5 diagnoses per day.',
-            'Full history.',
-            'Diagnosis follow-up.',
-            'Recommendations tailored to each plant.',
+            'Unlimited plants.',
+            'Advanced chat with your plant.',
+            '15 photo diagnoses per month.',
+            'Full diagnosis history.',
+            'Personalised recommendations.',
+            'Adaptive watering calendar.',
+            'Personalised notifications.',
           ],
           cta: 'Notify me',
         },
         {
-          name: 'Pro',
-          tagline: 'For large collections and frequent use.',
+          name: 'Sensor',
+          tagline: 'The full experience, with the physical sensor included.',
           features: [
-            'Unlimited plants.',
+            'Physical sensor included.',
             'Everything included in Plus.',
-            '60 photo diagnoses per month.',
-            'Up to 10 diagnoses per day.',
-            'Full history.',
-            'Diagnosis follow-up.',
-            'More capacity to use the AI-powered features.',
+            'Advanced chat with sensor context.',
+            '30 photo diagnoses per month.',
+            'Photo-based plant evolution.',
+            'Sensor-based watering calendar.',
+            'Predictive notifications.',
+            'Flory Score.',
+            '24/7 monitoring.',
+            'AI predictions.',
           ],
           cta: 'Notify me',
         },
@@ -498,16 +515,23 @@ const translations = {
       comparison: {
         title: 'Comparison',
         featureLabel: 'Feature',
+        includedLabel: 'Included',
+        notIncludedLabel: 'Not included',
         monthlyPriceLabel: 'Monthly price',
         annualPriceLabel: 'Annual price',
         rows: [
-          { label: 'Plants', values: ['1', '5', 'Unlimited'] },
-          { label: 'Diagnoses per month', values: ['3', '20', '60'] },
-          { label: 'Diagnoses per day', values: ['2', '5', '10'] },
-          { label: 'History', values: ['30 days', 'Full', 'Full'] },
-          { label: 'Follow-up', values: ['No', 'Yes', 'Yes'] },
-          { label: 'Chat', values: ['Yes', 'Yes', 'Yes'] },
-          { label: 'Species identification', values: ['Yes', 'Yes', 'Yes'] },
+          { label: 'Plants', values: ['2', 'Unlimited', 'Unlimited'] },
+          { label: 'Chat', values: ['Basic', 'Advanced', 'Advanced + sensor context'] },
+          { label: 'Diagnoses', values: ['3/month', '15/month', '30/month'] },
+          { label: 'Diagnosis history', values: ['Basic', 'Full', 'Full'] },
+          { label: 'Photo-based evolution', values: ['✗', '✗', '✓'] },
+          { label: 'Personalised recommendations', values: ['Basic', '✓', '✓'] },
+          { label: 'Watering calendar', values: ['✓', '✓ adaptive', '✓ sensor-based'] },
+          { label: 'Notifications', values: ['Basic', 'Personalised', 'Predictive'] },
+          { label: 'Flory Score', values: ['✗', '✗', '✓'] },
+          { label: 'Monitoring', values: ['✗', '✗', '24/7'] },
+          { label: 'AI predictions', values: ['✗', '✗', '✓'] },
+          { label: 'Physical sensor', values: ['✗', '✗', 'Included'] },
         ],
       },
       founding: {
@@ -518,7 +542,7 @@ const translations = {
       },
       openPeriodNote: 'During the launch period, the Free plan has extended limits.',
       cta: 'Start free',
-      note: 'Prices in Chilean pesos, VAT included. Plus and Pro are not available to purchase yet.',
+      note: 'Prices in Chilean pesos, VAT included. Plus and Sensor are not available to purchase yet.',
     },
     quiero: {
       meta: {
@@ -528,7 +552,7 @@ const translations = {
       back: 'Back to homepage',
       eyebrow: 'Step 1 of 2',
       title: 'Choose your plan 🌱',
-      description: 'Free is ready. Plus and Pro are coming soon: leave your email and we will tell you.',
+      description: 'Free is ready. Plus and Sensor are coming soon: leave your email and we will tell you.',
       availability: {
         badge: 'Launch period',
         launchTitle: 'Flory is in its launch period.',
@@ -576,7 +600,7 @@ const translations = {
         {
           question: 'Is Flory free?',
           answer:
-            'Yes. The Free plan lets you care for one plant with its watering calendar, photo identification, chat and diagnoses, without paying anything. Plus and Pro are higher-capacity plans that are not available to purchase yet.',
+            'Yes. The Free plan lets you care for two plants with their watering calendar, photo identification, chat and diagnoses, without paying anything. Plus and Sensor are higher-capacity plans that are not available to purchase yet.',
         },
         {
           question: 'Do I need the sensor to use the app?',
@@ -589,9 +613,9 @@ const translations = {
             'In December. It will measure soil moisture and fine-tune watering, but the app will keep working exactly the same without it.',
         },
         {
-          question: 'What is the difference between Free, Plus and Pro?',
+          question: 'What is the difference between Free, Plus and Sensor?',
           answer:
-            'Capacity. Free covers one plant and three diagnoses per month. Plus goes up to five plants and twenty diagnoses. Pro has no plant limit and reaches sixty diagnoses, plus follow-up and per-plant recommendations.',
+            'Capacity and the sensor. Free covers two plants and three diagnoses per month. Plus has unlimited plants, fifteen diagnoses and personalised recommendations. Sensor includes the physical sensor, thirty diagnoses, 24/7 monitoring, Flory Score and AI predictions.',
         },
         {
           question: 'Does it work with any plant?',
@@ -645,9 +669,9 @@ const translations = {
   },
   pt: {
     meta: {
-      title: 'Flory · Sua planta diz o que precisa',
+      title: 'Flory · App para cuidar das suas plantas e saber quando regar',
       description:
-        'O Flory identifica sua planta por foto, diz quando regar e diagnostica os problemas dela. App de cuidado de plantas feito no Chile.',
+        'Identifique sua planta por foto, receba o calendário de rega e diagnostique os problemas dela. App chileno de cuidado de plantas, grátis na App Store.',
     },
     language: { label: 'Idioma' },
     nav: {
@@ -758,24 +782,26 @@ const translations = {
     pricing: {
       eyebrow: 'Preços',
       title: 'Escolha seu plano',
-      description: 'O Free já está pronto. Plus e Pro chegam em breve.',
+      description: 'O Free já está pronto. Plus e Sensor chegam em breve.',
       mostPopular: 'Mais popular',
       comingSoon: 'Em breve',
       perMonth: 'por mês',
       forever: 'para sempre',
+      priceFrom: 'a partir de',
+      priceFromNote: '* O plano Sensor começa em $5.990 por mês, com o sensor físico incluído.',
       annualSuffix: 'por ano, o equivalente a dois meses grátis.',
       plans: [
         {
           name: 'Free',
-          tagline: 'Para começar a cuidar da sua primeira planta.',
+          tagline: 'Para começar a cuidar das suas primeiras plantas.',
           features: [
-            '1 planta.',
-            'Calendário personalizado de rega.',
-            'Identificação de espécies.',
-            'Chat com sua planta.',
+            '2 plantas.',
+            'Chat básico com sua planta.',
             '3 diagnósticos por fotografia ao mês.',
-            'No máximo 2 diagnósticos por dia.',
-            'Histórico dos últimos 30 dias.',
+            'Histórico básico de diagnósticos.',
+            'Recomendações básicas.',
+            'Calendário de rega.',
+            'Notificações básicas.',
           ],
           cta: 'Começar grátis',
         },
@@ -783,27 +809,30 @@ const translations = {
           name: 'Plus',
           tagline: 'Para quem tem várias plantas em casa.',
           features: [
-            'Até 5 plantas.',
-            'Tudo o que está incluído no Free.',
-            '20 diagnósticos por fotografia ao mês.',
-            'No máximo 5 diagnósticos por dia.',
-            'Histórico completo.',
-            'Acompanhamento de diagnósticos.',
-            'Recomendações adaptadas a cada planta.',
+            'Plantas ilimitadas.',
+            'Chat avançado com sua planta.',
+            '15 diagnósticos por fotografia ao mês.',
+            'Histórico completo de diagnósticos.',
+            'Recomendações personalizadas.',
+            'Calendário de rega adaptativo.',
+            'Notificações personalizadas.',
           ],
           cta: 'Me avise quando chegar',
         },
         {
-          name: 'Pro',
-          tagline: 'Para coleções grandes e uso frequente.',
+          name: 'Sensor',
+          tagline: 'A experiência completa, com o sensor físico incluído.',
           features: [
-            'Plantas ilimitadas.',
+            'Sensor físico incluído.',
             'Tudo o que está incluído no Plus.',
-            '60 diagnósticos por fotografia ao mês.',
-            'No máximo 10 diagnósticos por dia.',
-            'Histórico completo.',
-            'Acompanhamento de diagnósticos.',
-            'Maior capacidade de uso das funções com inteligência artificial.',
+            'Chat avançado com contexto do sensor.',
+            '30 diagnósticos por fotografia ao mês.',
+            'Evolução da sua planta por fotos.',
+            'Calendário de rega baseado no sensor.',
+            'Notificações preditivas.',
+            'Flory Score.',
+            'Monitoramento 24/7.',
+            'Previsões com IA.',
           ],
           cta: 'Me avise quando chegar',
         },
@@ -811,16 +840,23 @@ const translations = {
       comparison: {
         title: 'Comparação',
         featureLabel: 'Característica',
+        includedLabel: 'Incluído',
+        notIncludedLabel: 'Não incluído',
         monthlyPriceLabel: 'Preço mensal',
         annualPriceLabel: 'Preço anual',
         rows: [
-          { label: 'Plantas', values: ['1', '5', 'Ilimitadas'] },
-          { label: 'Diagnósticos por mês', values: ['3', '20', '60'] },
-          { label: 'Diagnósticos por dia', values: ['2', '5', '10'] },
-          { label: 'Histórico', values: ['30 dias', 'Completo', 'Completo'] },
-          { label: 'Acompanhamento', values: ['Não', 'Sim', 'Sim'] },
-          { label: 'Chat', values: ['Sim', 'Sim', 'Sim'] },
-          { label: 'Identificação de espécies', values: ['Sim', 'Sim', 'Sim'] },
+          { label: 'Plantas', values: ['2', 'Ilimitadas', 'Ilimitadas'] },
+          { label: 'Chat', values: ['Básico', 'Avançado', 'Avançado + contexto do sensor'] },
+          { label: 'Diagnósticos', values: ['3/mês', '15/mês', '30/mês'] },
+          { label: 'Histórico de diagnósticos', values: ['Básico', 'Completo', 'Completo'] },
+          { label: 'Evolução por fotos', values: ['✗', '✗', '✓'] },
+          { label: 'Recomendações personalizadas', values: ['Básicas', '✓', '✓'] },
+          { label: 'Calendário de rega', values: ['✓', '✓ adaptativo', '✓ baseado no sensor'] },
+          { label: 'Notificações', values: ['Básicas', 'Personalizadas', 'Preditivas'] },
+          { label: 'Flory Score', values: ['✗', '✗', '✓'] },
+          { label: 'Monitoramento', values: ['✗', '✗', '24/7'] },
+          { label: 'Previsões com IA', values: ['✗', '✗', '✓'] },
+          { label: 'Sensor físico', values: ['✗', '✗', 'Incluído'] },
         ],
       },
       founding: {
@@ -831,7 +867,7 @@ const translations = {
       },
       openPeriodNote: 'Durante o período de lançamento, o plano Free tem limites ampliados.',
       cta: 'Começar grátis',
-      note: 'Preços em pesos chilenos, IVA incluído. Plus e Pro ainda não estão disponíveis para contratar.',
+      note: 'Preços em pesos chilenos, IVA incluído. Plus e Sensor ainda não estão disponíveis para contratar.',
     },
     quiero: {
       meta: {
@@ -841,7 +877,7 @@ const translations = {
       back: 'Voltar ao início',
       eyebrow: 'Passo 1 de 2',
       title: 'Escolha seu plano 🌱',
-      description: 'O Free já está pronto. Plus e Pro chegam em breve: deixe seu e-mail e avisamos.',
+      description: 'O Free já está pronto. Plus e Sensor chegam em breve: deixe seu e-mail e avisamos.',
       availability: {
         badge: 'Período de lançamento',
         launchTitle: 'O Flory está em período de lançamento.',
@@ -889,7 +925,7 @@ const translations = {
         {
           question: 'O Flory é grátis?',
           answer:
-            'Sim. O plano Free permite cuidar de uma planta com calendário de rega, identificação por foto, chat e diagnósticos, sem pagar nada. Plus e Pro são planos de maior capacidade que ainda não estão disponíveis para contratar.',
+            'Sim. O plano Free permite cuidar de duas plantas com calendário de rega, identificação por foto, chat e diagnósticos, sem pagar nada. Plus e Sensor são planos de maior capacidade que ainda não estão disponíveis para contratar.',
         },
         {
           question: 'Preciso do sensor para usar o app?',
@@ -902,9 +938,9 @@ const translations = {
             'Em dezembro. Ele vai medir a umidade do solo e afinar a rega, mas o app continua funcionando igual sem ele.',
         },
         {
-          question: 'Qual é a diferença entre Free, Plus e Pro?',
+          question: 'Qual é a diferença entre Free, Plus e Sensor?',
           answer:
-            'A capacidade. O Free é para uma planta e três diagnósticos por mês. O Plus vai até cinco plantas e vinte diagnósticos. O Pro não tem limite de plantas e chega a sessenta diagnósticos, além de acompanhamento e recomendações por planta.',
+            'A capacidade e o sensor. O Free é para duas plantas e três diagnósticos por mês. O Plus tem plantas ilimitadas, quinze diagnósticos e recomendações personalizadas. O Sensor inclui o sensor físico, trinta diagnósticos, monitoramento 24/7, Flory Score e previsões com IA.',
         },
         {
           question: 'Funciona com qualquer planta?',

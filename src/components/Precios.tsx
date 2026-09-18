@@ -1,14 +1,51 @@
 import { useI18n } from '../i18n'
 import { formatCLP, getPlans } from '../lib/pricing'
 import CtaLoQuiero from './CtaLoQuiero'
-import { IconCheck, IconSparkle } from './icons'
+import { IconCheck, IconSparkle, IconX } from './icons'
 import Reveal from './Reveal'
+
+/**
+ * Valores de la tabla comparativa. En el copy, "✓" y "✗" al inicio del valor
+ * se convierten en icono; el texto restante ("✓ adaptativo") se conserva.
+ */
+function ComparisonValue({
+  value,
+  includedLabel,
+  notIncludedLabel,
+}: {
+  value: string
+  includedLabel: string
+  notIncludedLabel: string
+}) {
+  if (value.startsWith('✓')) {
+    const rest = value.slice(1).trim()
+    return (
+      <span className="flex items-center gap-1.5">
+        <span className="grid size-5 shrink-0 place-items-center rounded-full bg-leaf-100 text-leaf">
+          <IconCheck className="size-3" />
+        </span>
+        {rest || <span className="sr-only">{includedLabel}</span>}
+      </span>
+    )
+  }
+
+  if (value.startsWith('✗')) {
+    return (
+      <span className="grid size-5 place-items-center rounded-full bg-clay/10 text-clay">
+        <IconX className="size-3" />
+        <span className="sr-only">{notIncludedLabel}</span>
+      </span>
+    )
+  }
+
+  return <>{value}</>
+}
 
 /**
  * Precios de la app.
  *
- * Solo Free se puede usar hoy. Plus y Pro existen en la base de datos de la
- * app pero no están comercialmente activos (no hay pasarela de pago), así
+ * Solo Free se puede usar hoy. Plus y Sensor existen en la base de datos de
+ * la app pero no están comercialmente activos (no hay pasarela de pago), así
  * que se muestran como "Próximamente" y su CTA solo deja el correo.
  *
  * Founding no es un plan: es una condición para quienes llegan durante el
@@ -67,8 +104,12 @@ export default function Precios() {
 
                   <div className="mt-4">
                     <p className="flex items-baseline gap-2">
+                      {plan.priceFrom && (
+                        <span className="text-xs font-semibold text-muted">{copy.pricing.priceFrom}</span>
+                      )}
                       <span className="font-display text-[2.1rem] leading-none font-bold text-forest">
                         {formatCLP(plan.monthlyPrice)}
+                        {plan.priceFrom && '*'}
                       </span>
                       <span className="text-xs font-semibold text-muted">
                         {isFree ? copy.pricing.forever : copy.pricing.perMonth}
@@ -77,7 +118,9 @@ export default function Precios() {
                     {/* Altura reservada también en Free: mantiene las listas
                         de features alineadas entre las tres tarjetas. */}
                     <p className="mt-2 min-h-8 text-xs font-bold text-leaf-600">
-                      {isFree ? '' : `${formatCLP(plan.annualPrice)} ${copy.pricing.annualSuffix}`}
+                      {isFree
+                        ? ''
+                        : `${plan.priceFrom ? `${copy.pricing.priceFrom} ` : ''}${formatCLP(plan.annualPrice)} ${copy.pricing.annualSuffix}`}
                     </p>
                   </div>
 
@@ -144,7 +187,9 @@ export default function Precios() {
                   </th>
                   {plans.map((plan) => (
                     <td key={plan.id} className="py-3 pr-4 text-sm font-bold text-ink">
-                      {formatCLP(plan.monthlyPrice)}
+                      {plan.priceFrom
+                        ? `${copy.pricing.priceFrom} ${formatCLP(plan.monthlyPrice)}*`
+                        : formatCLP(plan.monthlyPrice)}
                     </td>
                   ))}
                 </tr>
@@ -154,7 +199,9 @@ export default function Precios() {
                   </th>
                   {plans.map((plan) => (
                     <td key={plan.id} className="py-3 pr-4 text-sm font-bold text-ink">
-                      {formatCLP(plan.annualPrice)}
+                      {plan.priceFrom
+                        ? `${copy.pricing.priceFrom} ${formatCLP(plan.annualPrice)}*`
+                        : formatCLP(plan.annualPrice)}
                     </td>
                   ))}
                 </tr>
@@ -166,7 +213,11 @@ export default function Precios() {
                     </th>
                     {row.values.map((value, valueIndex) => (
                       <td key={plans[valueIndex].id} className="py-3 pr-4 text-sm font-bold text-ink">
-                        {value}
+                        <ComparisonValue
+                          value={value}
+                          includedLabel={copy.pricing.comparison.includedLabel}
+                          notIncludedLabel={copy.pricing.comparison.notIncludedLabel}
+                        />
                       </td>
                     ))}
                   </tr>
@@ -174,6 +225,8 @@ export default function Precios() {
               </tbody>
             </table>
           </div>
+
+          <p className="mt-3 text-xs text-muted">{copy.pricing.priceFromNote}</p>
         </Reveal>
 
         {/* Founding no es un plan que se compre: es una condición para los

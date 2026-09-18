@@ -1,24 +1,195 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/flory.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flory · App para cuidar tus plantas y saber cuándo regarlas</title>
     <meta
       name="description"
-      content="Flory measures soil moisture, light, temperature and nutrients, then tells you what your plant needs today. PlantTech made in Chile."
+      content="Identifica tu planta con una foto, recibe su calendario de riego y diagnostica sus problemas. App chilena de cuidado de plantas, gratis en el App Store."
     />
+    <meta
+      name="keywords"
+      content="app para cuidar plantas, cuándo regar mis plantas, identificar plantas con una foto, riego de plantas, diagnóstico de plantas, plantas de interior, app de plantas Chile, cuidado de plantas Latinoamérica, Flory"
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://somosflory.cl/" />
     <meta name="theme-color" content="#fdf6e9" />
+    <meta name="geo.region" content="CL" />
+    <meta name="geo.placename" content="Santiago, Chile" />
+    <meta name="apple-itunes-app" content="app-id=6806155883" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Flory" />
+    <meta property="og:url" content="https://somosflory.cl/" />
+    <meta property="og:title" content="Flory · App para cuidar tus plantas y saber cuándo regarlas" />
+    <meta
+      property="og:description"
+      content="Identifica tu planta con una foto, recibe su calendario de riego y diagnostica sus problemas. App chilena de cuidado de plantas, gratis en el App Store."
+    />
+    <meta property="og:image" content="https://somosflory.cl/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Logotipo de Flory, app de cuidado de plantas" />
+    <meta property="og:locale" content="es_CL" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="pt_BR" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Flory · App para cuidar tus plantas y saber cuándo regarlas" />
+    <meta
+      name="twitter:description"
+      content="Identifica tu planta con una foto, recibe su calendario de riego y diagnostica sus problemas. App chilena de cuidado de plantas, gratis en el App Store."
+    />
+    <meta name="twitter:image" content="https://somosflory.cl/og-image.png" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
-    <title>Flory · Your plants are already talking</title>
+
+    <!--
+      Datos estructurados para buscadores y asistentes de IA. Regla de
+      honestidad: solo describe lo que la app hace hoy (igual que el copy
+      de src/i18n.tsx). Las FAQ son las mismas que se ven en la landing.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://somosflory.cl/#organization",
+            "name": "Tame SpA",
+            "brand": { "@type": "Brand", "name": "Flory" },
+            "url": "https://somosflory.cl/",
+            "logo": "https://somosflory.cl/logo.png",
+            "email": "contact@tame.cl",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Santiago",
+              "addressCountry": "CL"
+            },
+            "sameAs": [
+              "https://www.instagram.com/somosflory/",
+              "https://apps.apple.com/cl/app/flory/id6806155883"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://somosflory.cl/#website",
+            "url": "https://somosflory.cl/",
+            "name": "Flory",
+            "inLanguage": ["es", "en", "pt-BR"],
+            "publisher": { "@id": "https://somosflory.cl/#organization" }
+          },
+          {
+            "@type": "MobileApplication",
+            "@id": "https://somosflory.cl/#app",
+            "name": "Flory",
+            "operatingSystem": "iOS",
+            "applicationCategory": "LifestyleApplication",
+            "description": "Flory es una app de cuidado de plantas hecha en Chile. Identifica tu planta con una foto, calcula cuándo regarla según su especie y su entorno, diagnostica plagas y problemas a partir de una foto, y te deja conversar con tu planta. Incluye un catálogo de 206 especies chilenas con datos de toxicidad para mascotas.",
+            "installUrl": "https://apps.apple.com/cl/app/flory/id6806155883",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CLP" },
+            "inLanguage": ["es", "en", "pt-BR"],
+            "countryOfOrigin": { "@type": "Country", "name": "Chile" },
+            "publisher": { "@id": "https://somosflory.cl/#organization" }
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://somosflory.cl/#faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "¿Flory es gratis?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sí. El plan Free te deja cuidar una planta con su calendario de riego, identificación por foto, chat y diagnósticos, sin pagar nada. Plus y Pro son planes de mayor capacidad que todavía no están disponibles para contratar."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Necesito el sensor para usar la app?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Hoy Flory funciona solo con la app: identifica tu planta con una foto y calcula su ritmo de riego según su especie y su entorno. El sensor es un complemento opcional que llega más adelante."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Cuándo llega el sensor?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "En diciembre. Servirá para medir la humedad del suelo y afinar el riego, pero la app seguirá funcionando igual sin él."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Qué diferencia hay entre Free, Plus y Pro?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "La capacidad. Free es para una planta y tres diagnósticos al mes. Plus llega a cinco plantas y veinte diagnósticos. Pro no tiene límite de plantas y llega a sesenta diagnósticos, además de seguimiento y recomendaciones por planta."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Funciona con cualquier planta?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Tenemos un catálogo de 206 especies chilenas con sus cuidados. Si tu planta no está, Flory igual la cuida con cuidados aproximados y te lo indica claramente en su ficha."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <!--
+      Contenido para crawlers y asistentes de IA que no ejecutan JavaScript.
+      Es un espejo del copy real de la landing (src/i18n.tsx), no contenido
+      distinto: si el copy cambia, esto debe cambiar con él.
+    -->
+    <noscript>
+      <main>
+        <h1>Flory: tu planta te dice lo que necesita</h1>
+        <p>
+          Flory es una app de cuidado de plantas hecha en Chile, pensada para Chile y Latinoamérica.
+          Identifica tu planta con una foto, te dice cuándo regarla y diagnostica sus problemas.
+          Está disponible gratis en el App Store:
+          <a href="https://apps.apple.com/cl/app/flory/id6806155883">descargar Flory para iPhone</a>.
+        </p>
+        <h2>Qué hace Flory por tus plantas</h2>
+        <ul>
+          <li>Identifica la especie de tu planta con una foto, o la buscas en el catálogo de 206 especies chilenas.</li>
+          <li>Calcula cuándo regar según la especie y el entorno real de tu planta, no una regla genérica.</li>
+          <li>Resume el estado de tu planta en tres niveles (bien, atención, urgente) y te lo cuenta en primera persona.</li>
+          <li>Diagnostica plagas y problemas a partir de una foto de una hoja: causa probable, qué hacer y en qué plazo.</li>
+          <li>Te deja chatear con cada planta, que responde considerando su especie, su estado y sus diagnósticos recientes.</li>
+          <li>Ajusta el ritmo de riego según cómo encontraste la tierra, explicándote por qué lo cambió.</li>
+          <li>Incluye datos de toxicidad para mascotas en su catálogo de especies.</li>
+        </ul>
+        <h2>Preguntas frecuentes</h2>
+        <h3>¿Flory es gratis?</h3>
+        <p>Sí. El plan Free te deja cuidar una planta con su calendario de riego, identificación por foto, chat y diagnósticos, sin pagar nada.</p>
+        <h3>¿Necesito el sensor para usar la app?</h3>
+        <p>No. Hoy Flory funciona solo con la app. El sensor de humedad de suelo es un complemento opcional que llega más adelante.</p>
+        <h3>¿Funciona con cualquier planta?</h3>
+        <p>Tenemos un catálogo de 206 especies chilenas con sus cuidados. Si tu planta no está, Flory igual la cuida con cuidados aproximados y te lo indica claramente.</p>
+        <p>
+          Flory es operado por Tame SpA, Santiago de Chile. Contacto: contact@tame.cl ·
+          <a href="https://www.instagram.com/somosflory/">Instagram @somosflory</a>
+        </p>
+      </main>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

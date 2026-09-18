@@ -236,6 +236,19 @@ export function IconDash({ className = '' }: IconProps) {
   )
 }
 
+export function IconX({ className = '' }: IconProps) {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className={className}>
+      <path
+        d="m6 6 8 8m0-8-8 8"
+        stroke="currentColor"
+        strokeWidth="2.1"
+        strokeLinecap="round"
+      />
+    </svg>
+  )
+}
+
 export function IconCheck({ className = '' }: IconProps) {
   return (
     <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className={className}>
